@@ -740,6 +740,30 @@ static void MX_LTDC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN LTDC_Init 2 */
+  if (HAL_LTDC_DeInit(&hltdc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  hltdc.Init.HorizontalSync = LCD_RES_HS - 1;
+  hltdc.Init.VerticalSync = LCD_RES_VS - 1;
+  hltdc.Init.AccumulatedHBP = LCD_RES_HS + LCD_RES_HBP - 1 ;// Horizontal Synchronization Width + Horizontal Back Porch - 1
+  hltdc.Init.AccumulatedVBP = LCD_RES_VS + LCD_RES_VBP - 1;//Vertical Synchronization Height + Vertical Back Porch - 1
+  hltdc.Init.AccumulatedActiveW =  LCD_RES_HS + LCD_RES_HBP + LCD_RES_H - 1; // Horizontal Synchronization Width + Horizontal Back Porch + Active Width - 1
+  hltdc.Init.AccumulatedActiveH = LCD_RES_VS + LCD_RES_VBP + LCD_RES_V - 1; // Vertical Synchronization Height + Vertical Back Porch + Active Height - 1
+  hltdc.Init.TotalWidth = LCD_RES_HS + LCD_RES_HBP + LCD_RES_H + LCD_RES_HFP - 1;//1344; //Horizontal Synchronization Width + Horizontal Back Porch + Active Width + Horizontal Front Porch - 1
+  hltdc.Init.TotalHeigh = LCD_RES_VS + LCD_RES_VBP + LCD_RES_V + LCD_RES_VFP - 1;//635; //Vertical Synchronization Height + Vertical Back Porch + Active Height + Vertical Front Porch - 1
+  if (HAL_LTDC_Init(&hltdc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  pLayerCfg.WindowX1 = LCD_RES_H;
+  pLayerCfg.WindowY1 = LCD_RES_V;
+  pLayerCfg.ImageWidth = LCD_RES_H;
+  pLayerCfg.ImageHeight = LCD_RES_V;
+  if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
   /* USER CODE END LTDC_Init 2 */
 
@@ -1089,14 +1113,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(HALL_OUT_1_PI12_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LED_TIM2_CH2_PA1_Pin LED_TIM2_CH3_PA2_Pin */
-  GPIO_InitStruct.Pin = LED_TIM2_CH2_PA1_Pin|LED_TIM2_CH3_PA2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
   /*Configure GPIO pins : OUT_S0_Pin OUT_E_Pin */
   GPIO_InitStruct.Pin = OUT_S0_Pin|OUT_E_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -1273,12 +1289,13 @@ void Start_CAN_Task(void *argument)
 {
   /* USER CODE BEGIN Start_CAN_Task */
 	/* Infinite loop */
-	Current_Status.CAN_PROTOCOL = CAN_LINK;
+	Current_Status.CAN_PROTOCOL = CAN_AIM;
 	Current_Status.PRES_UNIT = kPa;
 	Current_Status.TEMP_UNIT = C;
 	Current_Status.SPEED_UNIT = Kmh;
 	HAL_GPIO_WritePin(CAN1_SEL0_GPIO_Port, CAN1_SEL0_Pin, SET);
 
+	Current_Status.RPM = 4500;
 
 	for (;;) {
 		if (CAN_ENABLED) {
@@ -1638,28 +1655,10 @@ void Start_CAN_Task(void *argument)
 
 			}
 			else {
-//				countBlankMessages ++;
-//				if(countBlankMessages == 100)
-//				{
-//					countBlankMessages = 0;
-//					Current_Status.BARO = 0;
-//					Current_Status.BATT = 0;
-//					Current_Status.FUELP = 0;
-//					Current_Status.FUELT = 0;
-//					Current_Status.GEAR = 0;
-//					Current_Status.IAT = 0;
-//					Current_Status.OILP = 0;
-//					Current_Status.OILT = 0;
-//					Current_Status.LAMBDA1 = 0;
-//					Current_Status.LAMBDA2 = 0;
-//					Current_Status.TPS = 0;
-//					Current_Status.MAP = 0;
-//					Current_Status.RPM_100 = 0;
-//					Current_Status.RPM_180 = 0;
-//					Current_Status.RPM_270 = 0;
-//					Current_Status.RPM_240 = 0;
-//					Current_Status.RPM_360 = 0;
-//				}
+
+				if(Current_Status.RPM > LCD_RPM_HIGH) Current_Status.RPM = 0;
+				Current_Status.RPM = Current_Status.RPM + 1;
+				osDelay(1);
 			}
 		} else {
 			osDelay(60000);
@@ -1706,14 +1705,23 @@ void Start_BTN_Task(void *argument)
 	//htim9.Instance->CCR2 = crr2 - 1; //right
 
 	for (;;) {
-		Current_Status.BTN_TOP_RIGHT = HAL_GPIO_ReadPin(BTN_1_GPIO_Port,
-		BTN_1_Pin);
-		Current_Status.BTN_TOP_LEFT = HAL_GPIO_ReadPin(BTN_3_GPIO_Port,
-		BTN_3_Pin);
+		Current_Status.BTN_TOP_RIGHT = HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin);
+		Current_Status.BTN_TOP_LEFT = HAL_GPIO_ReadPin(BTN_3_GPIO_Port, BTN_3_Pin);
+		Current_Status.BTN_BOTTOM_RIGHT = HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin);
+		Current_Status.BTN_BOTTOM_LEFT = HAL_GPIO_ReadPin(BTN_4_GPIO_Port, BTN_4_Pin);
 
 		//Current_Status.RPM = Current_Status.LCD_BRIGHTNESS;
-		//Current_Status.IND_LEFT = Current_Status.BTN_TOP_LEFT;
-		//Current_Status.IND_RIGHT = Current_Status.BTN_TOP_RIGHT;
+		Current_Status.IND_LEFT = Current_Status.BTN_TOP_LEFT;
+		Current_Status.IND_RIGHT = Current_Status.BTN_TOP_RIGHT;
+		Current_Status.IND_OIL = Current_Status.BTN_BOTTOM_LEFT;
+		Current_Status.IND_DTC = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_PARK = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_ECT = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_FUEL = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_HIGH = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_LOW = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_ECT = Current_Status.BTN_BOTTOM_RIGHT;
+		Current_Status.IND_OIL = Current_Status.BTN_BOTTOM_RIGHT;
 
 //		Current_Status.BTN_BOTTOM_RIGHT = HAL_GPIO_ReadPin(BTN_2_GPIO_Port,
 //		BTN_2_Pin);
@@ -1805,8 +1813,8 @@ void Start_RGB_Task(void *argument)
 				for (int i = 1; i <= lowRange; i++) {
 					WS2812_RGB_t color;
 					if (Current_Status.ENGINE_PROTECTION == 1) {
-						color.red = 255;
-						color.green = 0;
+						color.red = 0;
+						color.green = 255;
 						color.blue = 0;
 					} else {
 						color.red = 0;
@@ -1821,6 +1829,18 @@ void Start_RGB_Task(void *argument)
 					for (int i = 1; i <= highRange; i++) {
 						WS2812_RGB_t color;
 						color.red = 255;
+						color.green = 0;
+						color.blue = 0;
+
+						WS2812_One_RGB((PROTECTION_RPM_LED - i) + (LED_NUMBER - RPMLED), color, 0);
+					}
+
+					WS2812_Refresh();
+					osDelay(50);
+
+					for (int i = 1; i <= highRange; i++) {
+						WS2812_RGB_t color;
+						color.red = 0;
 						color.green = 0;
 						color.blue = 0;
 
@@ -2092,13 +2112,13 @@ void Start_ADC_Task(void *argument)
 			Error_Handler();
 		}
 
-		//uint32_t ADCValue = 0;
+		uint32_t ADCValue = 0;
 		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1, 1000);
-		//ADCValue = HAL_ADC_GetValue(&hadc1);
+		ADCValue = HAL_ADC_GetValue(&hadc1);
 		HAL_ADC_Stop(&hadc1);
-		//Current_Status.BATT = (ADCValue * 749) * (3.3 / 4096) / 100;
-		Current_Status.IND_BATT = Current_Status.BATT < 11.98 ? true : false;
+		Current_Status.BATT = (ADCValue * 749) * (3.3 / 4096);
+		Current_Status.IND_BATT = Current_Status.BATT < 1198 ? true : false;
 		//Current_Status.ECT = (ADCValue * 749) * (3.3 / 4096);
 		osDelay(1000);
 	}

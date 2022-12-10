@@ -7,7 +7,7 @@
           {
             "Type": "Box",
             "Name": "box1",
-            "X": 1,
+            "X": -3,
             "Y": 1,
             "Width": 1024,
             "Height": 600
@@ -15,106 +15,106 @@
           {
             "Type": "Image",
             "Name": "image1",
-            "X": 2,
+            "X": -2,
             "Y": -8,
-            "Width": 1024,
-            "Height": 614,
-            "RelativeFilename": "race_dash.png"
+            "Width": 1027,
+            "Height": 617,
+            "RelativeFilename": "race_dash_full.png"
           },
           {
             "Type": "Image",
             "Name": "indLeft",
-            "X": 263,
+            "X": 264,
             "Y": 32,
-            "Width": 62,
-            "Height": 34,
+            "Width": 65,
+            "Height": 42,
             "RelativeFilename": "indLeft.png"
           },
           {
             "Type": "Image",
             "Name": "indRight",
-            "X": 725,
+            "X": 721,
             "Y": 32,
-            "Width": 62,
-            "Height": 34,
+            "Width": 65,
+            "Height": 42,
             "RelativeFilename": "indRight.png"
           },
           {
             "Type": "Image",
             "Name": "indHigh",
-            "X": 394,
-            "Y": 285,
-            "Width": 62,
-            "Height": 34,
+            "X": 375,
+            "Y": 289,
+            "Width": 49,
+            "Height": 28,
             "RelativeFilename": "indHigh.png"
           },
           {
             "Type": "Image",
             "Name": "indFuel",
-            "X": 563,
-            "Y": 213,
-            "Width": 62,
-            "Height": 34,
+            "X": 597,
+            "Y": 191,
+            "Width": 32,
+            "Height": 40,
             "RelativeFilename": "indFuel.png"
           },
           {
             "Type": "Image",
             "Name": "indOil",
-            "X": 410,
-            "Y": 344,
-            "Width": 62,
-            "Height": 34,
+            "X": 385,
+            "Y": 364,
+            "Width": 67,
+            "Height": 28,
             "RelativeFilename": "indOil.png"
           },
           {
             "Type": "Image",
             "Name": "indBatt",
-            "X": 425,
-            "Y": 215,
-            "Width": 62,
-            "Height": 34,
+            "X": 413,
+            "Y": 194,
+            "Width": 49,
+            "Height": 38,
             "RelativeFilename": "indBatt.png"
           },
           {
             "Type": "Image",
             "Name": "indPark",
-            "X": 496,
-            "Y": 186,
-            "Width": 62,
-            "Height": 34,
+            "X": 499,
+            "Y": 155,
+            "Width": 56,
+            "Height": 41,
             "RelativeFilename": "indPark.png"
           },
           {
             "Type": "Image",
             "Name": "indDTC",
-            "X": 495,
-            "Y": 232,
-            "Width": 62,
-            "Height": 34,
+            "X": 488,
+            "Y": 218,
+            "Width": 75,
+            "Height": 36,
             "RelativeFilename": "indDTC.png"
           },
           {
             "Type": "Image",
             "Name": "indECT",
-            "X": 451,
-            "Y": 377,
-            "Width": 62,
-            "Height": 34,
+            "X": 449,
+            "Y": 400,
+            "Width": 45,
+            "Height": 40,
             "RelativeFilename": "indECT.png"
           },
           {
             "Type": "Image",
             "Name": "indLow",
-            "X": 452,
-            "Y": 287,
-            "Width": 62,
-            "Height": 34,
+            "X": 447,
+            "Y": 290,
+            "Width": 48,
+            "Height": 30,
             "RelativeFilename": "indLow.png"
           },
           {
             "Type": "TextArea",
             "Name": "map_value",
-            "X": 955,
+            "X": 951,
             "Y": 9,
             "Width": 44,
             "Height": 96,
@@ -135,7 +135,7 @@
           {
             "Type": "TextArea",
             "Name": "map_label",
-            "X": 889,
+            "X": 885,
             "Y": 100,
             "Width": 101,
             "Height": 30,
@@ -156,7 +156,7 @@
           {
             "Type": "TextArea",
             "Name": "map_units",
-            "X": 779,
+            "X": 775,
             "Y": 100,
             "Width": 101,
             "Height": 30,
@@ -177,7 +177,7 @@
           {
             "Type": "TextArea",
             "Name": "batt_value",
-            "X": 955,
+            "X": 951,
             "Y": 157,
             "Width": 44,
             "Height": 96,
@@ -198,7 +198,7 @@
           {
             "Type": "TextArea",
             "Name": "batt_label",
-            "X": 888,
+            "X": 884,
             "Y": 247,
             "Width": 101,
             "Height": 30,
@@ -219,7 +219,7 @@
           {
             "Type": "TextArea",
             "Name": "batt_units",
-            "X": 831,
+            "X": 827,
             "Y": 247,
             "Width": 101,
             "Height": 30,
@@ -240,7 +240,7 @@
           {
             "Type": "TextArea",
             "Name": "tps_value",
-            "X": 955,
+            "X": 951,
             "Y": 308,
             "Width": 44,
             "Height": 96,
@@ -261,7 +261,7 @@
           {
             "Type": "TextArea",
             "Name": "tps_label",
-            "X": 888,
+            "X": 884,
             "Y": 400,
             "Width": 101,
             "Height": 30,
@@ -282,7 +282,7 @@
           {
             "Type": "TextArea",
             "Name": "tps_units",
-            "X": 813,
+            "X": 809,
             "Y": 399,
             "Width": 101,
             "Height": 30,
@@ -303,7 +303,7 @@
           {
             "Type": "TextArea",
             "Name": "lambda_value",
-            "X": 955,
+            "X": 951,
             "Y": 455,
             "Width": 44,
             "Height": 96,
@@ -324,7 +324,7 @@
           {
             "Type": "TextArea",
             "Name": "lambda_label",
-            "X": 888,
+            "X": 884,
             "Y": 547,
             "Width": 101,
             "Height": 30,
@@ -345,7 +345,7 @@
           {
             "Type": "TextArea",
             "Name": "lambda_units",
-            "X": 699,
+            "X": 695,
             "Y": 547,
             "Width": 101,
             "Height": 30,
@@ -366,7 +366,7 @@
           {
             "Type": "TextArea",
             "Name": "ect_value",
-            "X": 31,
+            "X": 27,
             "Y": 9,
             "Width": 44,
             "Height": 96,
@@ -387,7 +387,7 @@
           {
             "Type": "TextArea",
             "Name": "ect_label",
-            "X": 34,
+            "X": 30,
             "Y": 97,
             "Width": 101,
             "Height": 30,
@@ -408,7 +408,7 @@
           {
             "Type": "TextArea",
             "Name": "ect_units",
-            "X": 173,
+            "X": 169,
             "Y": 97,
             "Width": 101,
             "Height": 30,
@@ -429,7 +429,7 @@
           {
             "Type": "TextArea",
             "Name": "iat_value",
-            "X": 31,
+            "X": 27,
             "Y": 157,
             "Width": 44,
             "Height": 96,
@@ -450,7 +450,7 @@
           {
             "Type": "TextArea",
             "Name": "iat_label",
-            "X": 34,
+            "X": 30,
             "Y": 246,
             "Width": 101,
             "Height": 30,
@@ -471,7 +471,7 @@
           {
             "Type": "TextArea",
             "Name": "iat_units",
-            "X": 114,
+            "X": 110,
             "Y": 246,
             "Width": 101,
             "Height": 30,
@@ -492,7 +492,7 @@
           {
             "Type": "TextArea",
             "Name": "oilp_value",
-            "X": 31,
+            "X": 27,
             "Y": 308,
             "Width": 44,
             "Height": 96,
@@ -513,7 +513,7 @@
           {
             "Type": "TextArea",
             "Name": "oilp_label",
-            "X": 34,
+            "X": 30,
             "Y": 400,
             "Width": 101,
             "Height": 30,
@@ -534,7 +534,7 @@
           {
             "Type": "TextArea",
             "Name": "oilp_units",
-            "X": 137,
+            "X": 133,
             "Y": 400,
             "Width": 101,
             "Height": 30,
@@ -555,7 +555,7 @@
           {
             "Type": "TextArea",
             "Name": "fuelp_value",
-            "X": 31,
+            "X": 27,
             "Y": 455,
             "Width": 44,
             "Height": 96,
@@ -576,7 +576,7 @@
           {
             "Type": "TextArea",
             "Name": "fuelp_label",
-            "X": 34,
+            "X": 30,
             "Y": 547,
             "Width": 101,
             "Height": 30,
@@ -597,7 +597,7 @@
           {
             "Type": "TextArea",
             "Name": "fuelp_units",
-            "X": 247,
+            "X": 243,
             "Y": 547,
             "Width": 101,
             "Height": 30,
@@ -618,7 +618,7 @@
           {
             "Type": "Gauge",
             "Name": "gauge1",
-            "X": 229,
+            "X": 225,
             "Y": -1,
             "Width": 600,
             "Height": 600,

@@ -14,24 +14,24 @@ extern "C" {
 
 
 #define BH1750_ENABLED			0
-#define GPS_ENABLED				1
+#define GPS_ENABLED				0
 #define CAN_ENABLED				1
 #define RGB_ENABLED				1
-#define UART_ENABLED			0
-#define IND_ENABLED 			0
-#define ALERT_ENABLED  			0
+#define UART_ENABLED			1
+#define IND_ENABLED 			1
+#define ALERT_ENABLED  			1
 
 #define LED_NUMBER				24
-#define LED_DEFAULT_BRIGHTNESS		2
 
-#define LCD_DEFAULT_BRIGHTNESS	400
+#define LCD_DEFAULT_BRIGHTNESS	500
+#define LED_DEFAULT_BRIGHTNESS	LCD_DEFAULT_BRIGHTNESS / 50
 
-#define LCD_RPM_HIGH 			8000
 
 #define PROTECTION_RPM_LOW 		6500
-#define PROTECTION_RPM_HIGH 	7800
+#define PROTECTION_RPM_HIGH 	7500
+#define LCD_RPM_HIGH 			PROTECTION_RPM_HIGH
 
-#define PROTECTION_RPM_LED 		6
+#define PROTECTION_RPM_LED 		10
 
 #define PROTECTION_OIL_LOW 		40
 #define PROTECTION_FUEL_LOW 	40
@@ -42,25 +42,47 @@ extern "C" {
 #define BAR_TO_KPA 				100.0f
 #define KPA_TO_BAR 				0.01f
 #define KPA_TO_PSI 				0.145038f
-
 #define AFR_TO_LAMBDA 			0.06802721088f
 
 #define USE_1024x600
+//#define USE_1280x480
 //#define USE_800x480
 
-#ifdef USE_1024x600
-	#define LCD_RES_X  1024
-	#define LCD_RES_Y  600
+#if defined(USE_1024x600)
+	#define LCD_RES_H  1024
+	#define LCD_RES_HS  2
+	#define LCD_RES_HBP  140
+	#define LCD_RES_HFP  160
+	#define LCD_RES_V  600
+	#define LCD_RES_VS  4
+	#define LCD_RES_VBP  12
+	#define LCD_RES_VFP  20
+#elif defined(USE_1280x480)
+	#define LCD_RES_H  1280
+	#define LCD_RES_HS  2
+	#define LCD_RES_HBP  140
+	#define LCD_RES_HFP  160
+	#define LCD_RES_V  480
+	#define LCD_RES_VS  4
+	#define LCD_RES_VBP  12
+	#define LCD_RES_VFP  20
 #else
-	#define LCD_RES_X  800
-	#define LCD_RES_Y  480
+	#define LCD_RES_H  800
+	#define LCD_RES_HS  2
+	#define LCD_RES_HBP  10
+	#define LCD_RES_HFP  10
+	#define LCD_RES_V  480
+	#define LCD_RES_VS  2
+	#define LCD_RES_VBP  10
+	#define LCD_RES_VFP  10
 #endif
 
 typedef enum {
 	CAN_LINK = 0,
 	CAN_AIM,
 	CAN_MX5,
-	CAN_BMW_PHEV
+	CAN_BMW_PHEV,
+	CAN_124,
 } CANDefEnum;
 
 typedef enum {

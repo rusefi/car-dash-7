@@ -69,10 +69,6 @@ void show_neopixels();
 #define HALL_OUT_1_PI12_GPIO_Port GPIOI
 #define MULTISENSE_ADC_Pin GPIO_PIN_1
 #define MULTISENSE_ADC_GPIO_Port GPIOC
-#define LED_TIM2_CH2_PA1_Pin GPIO_PIN_1
-#define LED_TIM2_CH2_PA1_GPIO_Port GPIOA
-#define LED_TIM2_CH3_PA2_Pin GPIO_PIN_2
-#define LED_TIM2_CH3_PA2_GPIO_Port GPIOA
 #define OUT_S0_Pin GPIO_PIN_2
 #define OUT_S0_GPIO_Port GPIOH
 #define OUT_E_Pin GPIO_PIN_3
