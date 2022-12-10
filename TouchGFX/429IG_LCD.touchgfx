@@ -640,6 +640,44 @@
             },
             "ArcCapStyle": "Butt",
             "ArcOnTopOfNeedle": true
+          },
+          {
+            "Type": "Button",
+            "Name": "button1",
+            "X": 575,
+            "Y": 404,
+            "Width": 170,
+            "Height": 60,
+            "Pressed": "__designer\\Blue_Buttons_Round_Edge_small_pressed.png",
+            "Released": "__designer\\Blue_Buttons_Round_Edge_small.png",
+            "Style": "Style4"
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "Interaction1",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "button1"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen2"
+            }
+          }
+        ]
+      },
+      {
+        "Name": "Screen2",
+        "Components": [
+          {
+            "Type": "Image",
+            "Name": "image1",
+            "Y": -8,
+            "Width": 1027,
+            "Height": 617,
+            "RelativeFilename": "race_dash_full.png"
           }
         ],
         "Interactions": []
