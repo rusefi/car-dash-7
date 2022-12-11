@@ -45,16 +45,22 @@ bool STM32TouchController::sampleTouch(int32_t& x, int32_t& y)
      * By default sampleTouch is called every tick, this can be adjusted by HAL::setTouchSampleRate(int8_t);
      *
      */
+
+
 	if(TOUCH_IsPressed())	//can be omitted -> controller continuously read touch data via i2c
 	{
 		TOUCH_Reset();		//can be omitted
 		TOUCH_Data td=TOUCH_GetData();
-		if(td.p>TP_MIN_PRESSURE)
-		{
-			x=td.x;
-			y=td.y;
-			return true;
-		}
+
+		x=td.x;
+		y=td.y;
+		return true;
+//		if(td.p>TP_MIN_PRESSURE)
+//		{
+//			x=td.x;
+//			y=td.y;
+//			return true;
+//		}
 	}
     return false;
 }

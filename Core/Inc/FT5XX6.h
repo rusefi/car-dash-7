@@ -53,7 +53,7 @@ J. Bajic - 2020.
 #define FT5XX6_RELEASE_CODE_ID  0xAF	///Release code version
 #define FT5XX6_STATE            0xBC 	//Current operating mode the FT5336 system is in (R)
 
-#define FT5XX6_TIMEOUT			5
+#define FT5XX6_TIMEOUT			1000
 
 /*touch point data*/
 typedef struct {

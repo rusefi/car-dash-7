@@ -13,7 +13,7 @@ uint8_t FT5XX6_Init(I2C_HandleTypeDef i2c_handle)
 {
 	hi2c=i2c_handle;
 
-	if(HAL_I2C_IsDeviceReady(&hi2c,FT5XX6_ADDR, 1, FT5XX6_TIMEOUT) == HAL_OK )
+	if(HAL_I2C_IsDeviceReady(&hi2c,FT5XX6_ADDR, 5, FT5XX6_TIMEOUT) == HAL_OK )
 	{
 		FT5XX6_Write(FT5XX6_MODE,0);		//working mode
 		FT5XX6_Write(FT5XX6_GMODE,0);		//polling mode

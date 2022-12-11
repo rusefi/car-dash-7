@@ -9,7 +9,7 @@ extern I2C_HandleTypeDef hi2c2;  //i2c port for touch screen
 void TOUCH_Init(void)
 {
 	// Configure touch GPIOs externally (CubeMx)
-	  //FT5XX6_Init(hi2c2);
+	FT5XX6_Init(hi2c2);
 }
 
 uint8_t TOUCH_IsPressed(void)
