@@ -22,8 +22,10 @@
 
 #include <STM32TouchController.hpp>
 extern "C" {
-#include "TargetDisplay.h"
+#include <TargetTouch.h>
+#include <Globals.h>
 }
+
 void STM32TouchController::init()
 {
     /**
@@ -46,7 +48,6 @@ bool STM32TouchController::sampleTouch(int32_t& x, int32_t& y)
      *
      */
 
-
 	if(TOUCH_IsPressed())	//can be omitted -> controller continuously read touch data via i2c
 	{
 		TOUCH_Reset();		//can be omitted
@@ -54,15 +55,13 @@ bool STM32TouchController::sampleTouch(int32_t& x, int32_t& y)
 
 		x=td.x;
 		y=td.y;
+
 		return true;
 //		if(td.p>TP_MIN_PRESSURE)
 //		{
-//			x=td.x;
-//			y=td.y;
-//			return true;
 //		}
 	}
-    return false;
+	return false;
 }
 
 /* USER CODE END STM32TouchController */

@@ -44,6 +44,9 @@ extern "C" {
 #define KPA_TO_PSI 				0.145038f
 #define AFR_TO_LAMBDA 			0.06802721088f
 
+extern uint8_t UART_recieved;
+extern uint8_t UART_buffer[64];
+
 #define USE_1024x600
 //#define USE_1280x480
 //#define USE_800x480

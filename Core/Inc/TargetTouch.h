@@ -1,6 +1,12 @@
-#ifndef TARGET_DISPLAY_H
-#define TARGET_DISPLAY_H
+/*
+ * Author: J.Bajic - 2020
+ */
 
+
+#ifndef TARGET_TOUCH_H
+#define TARGET_TOUCH_H
+
+#include "stm32f4xx_hal.h"
 #include "FT5XX6.h"
 
 #define TP_MIN_PRESSURE 50
@@ -18,4 +24,4 @@ void TOUCH_Set(void);
 void TOUCH_Reset(void);
 TOUCH_Data TOUCH_GetData(void);
 
-#endif /* TARGET_DISPLAY_H_ */
+#endif /* TARGET_TOUCH_H */

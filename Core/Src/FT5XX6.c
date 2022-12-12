@@ -85,9 +85,9 @@ CTP_point_data FT5XX6_ReadPoint(uint8_t point_num)
 	HAL_I2C_Mem_Read(&hi2c,FT5XX6_ADDR, reg_addr,1,data,FT5XX6_TOUCH_DATA_LEN,1000);
 
 	point.event=(data[0]&0xC0)>>6;
-	point.x=(data[0]&0x0F)<<8|data[1];
+	point.y= FT5XX6_FLIP_AXIS == 1 ? (data[0]&0x0F)<<8|data[1] : (data[2]&0x0F)<<8|data[3];
 	point.id=(data[2]&0xF0)>>4;
-	point.y=(data[2]&0x0F)<<8|data[3];
+	point.x=FT5XX6_FLIP_AXIS == 1 ? (data[2]&0x0F)<<8|data[3] : (data[0]&0x0F)<<8|data[1];
 	point.pressure=data[4];
 	point.area=(data[5]&0xF0)>>4;
 

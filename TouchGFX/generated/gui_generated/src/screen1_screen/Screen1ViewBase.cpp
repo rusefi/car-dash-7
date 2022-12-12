@@ -7,7 +7,7 @@
 #include <texts/TextKeysAndLanguages.hpp>
 
 Screen1ViewBase::Screen1ViewBase() :
-    buttonCallback(this, &Screen1ViewBase::buttonCallbackHandler)
+    flexButtonCallback(this, &Screen1ViewBase::flexButtonCallbackHandler)
 {
 
     __background.setPosition(0, 0, 1024, 600);
@@ -250,9 +250,12 @@ Screen1ViewBase::Screen1ViewBase() :
     gauge1.setMovingNeedleRenderingAlgorithm(touchgfx::TextureMapper::BILINEAR_INTERPOLATION);
     gauge1.setSteadyNeedleRenderingAlgorithm(touchgfx::TextureMapper::BILINEAR_INTERPOLATION);
 
-    button1.setXY(575, 404);
-    button1.setBitmaps(touchgfx::Bitmap(BITMAP_BLUE_BUTTONS_ROUND_EDGE_SMALL_ID), touchgfx::Bitmap(BITMAP_BLUE_BUTTONS_ROUND_EDGE_SMALL_PRESSED_ID));
-    button1.setAction(buttonCallback);
+    flexButton1.setBoxWithBorderPosition(0, 0, 165, 601);
+    flexButton1.setBorderSize(5);
+    flexButton1.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    flexButton1.setPosition(859, 0, 165, 601);
+    flexButton1.setAlpha(0);
+    flexButton1.setAction(flexButtonCallback);
 
     add(__background);
     add(box1);
@@ -292,7 +295,7 @@ Screen1ViewBase::Screen1ViewBase() :
     add(fuelp_label);
     add(fuelp_units);
     add(gauge1);
-    add(button1);
+    add(flexButton1);
 }
 
 void Screen1ViewBase::setupScreen()
@@ -300,12 +303,12 @@ void Screen1ViewBase::setupScreen()
 
 }
 
-void Screen1ViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
+void Screen1ViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
 {
-    if (&src == &button1)
+    if (&src == &flexButton1)
     {
         //Interaction1
-        //When button1 clicked change screen to Screen2
+        //When flexButton1 clicked change screen to Screen2
         //Go to Screen2 with no screen transition
         application().gotoScreen2ScreenNoTransition();
     }

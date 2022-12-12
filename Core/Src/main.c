@@ -34,6 +34,7 @@
 #include "BH1750.h"
 #include "spi_flash.h"
 #include "mcu_flash.h"
+#include "TargetTouch.h"
 
 /* USER CODE END Includes */
 
@@ -49,6 +50,8 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 #define LCD_ORIENTATION_LANDSCAPE 0x01
+uint8_t UART_recieved;
+uint8_t UART_buffer[64];
 
 /* USER CODE END PM */
 
@@ -71,7 +74,17 @@ SD_HandleTypeDef hsd;
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim8;
+TIM_HandleTypeDef htim9;
+TIM_HandleTypeDef htim10;
+TIM_HandleTypeDef htim11;
+TIM_HandleTypeDef htim12;
 TIM_HandleTypeDef htim13;
+TIM_HandleTypeDef htim14;
 DMA_HandleTypeDef hdma_tim1_ch1;
 
 UART_HandleTypeDef huart1;
@@ -120,13 +133,6 @@ const osThreadAttr_t BTN_Task_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for BARO_Task */
-osThreadId_t BARO_TaskHandle;
-const osThreadAttr_t BARO_Task_attributes = {
-  .name = "BARO_Task",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
 /* Definitions for RGB_Task */
 osThreadId_t RGB_TaskHandle;
 const osThreadAttr_t RGB_Task_attributes = {
@@ -134,17 +140,10 @@ const osThreadAttr_t RGB_Task_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for BH1750_Task */
-osThreadId_t BH1750_TaskHandle;
-const osThreadAttr_t BH1750_Task_attributes = {
-  .name = "BH1750_Task",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
-/* Definitions for LPS22_Task */
-osThreadId_t LPS22_TaskHandle;
-const osThreadAttr_t LPS22_Task_attributes = {
-  .name = "LPS22_Task",
+/* Definitions for UART_Task */
+osThreadId_t UART_TaskHandle;
+const osThreadAttr_t UART_Task_attributes = {
+  .name = "UART_Task",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
@@ -167,6 +166,20 @@ osThreadId_t ADC_TaskHandle;
 const osThreadAttr_t ADC_Task_attributes = {
   .name = "ADC_Task",
   .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for LCD_Task */
+osThreadId_t LCD_TaskHandle;
+const osThreadAttr_t LCD_Task_attributes = {
+  .name = "LCD_Task",
+  .stack_size = 64 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for MULTISENSE_Task */
+osThreadId_t MULTISENSE_TaskHandle;
+const osThreadAttr_t MULTISENSE_Task_attributes = {
+  .name = "MULTISENSE_Task",
+  .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* USER CODE BEGIN PV */
@@ -206,19 +219,29 @@ static void MX_ADC1_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_TIM2_Init(void);
+static void MX_TIM3_Init(void);
+static void MX_TIM4_Init(void);
+static void MX_TIM5_Init(void);
+static void MX_TIM8_Init(void);
+static void MX_TIM9_Init(void);
+static void MX_TIM10_Init(void);
+static void MX_TIM11_Init(void);
+static void MX_TIM12_Init(void);
+static void MX_TIM14_Init(void);
 void Start_START_Task(void *argument);
 void TouchGFX_Task(void *argument);
 void Start_SD_Task(void *argument);
 void Start_LED_Task(void *argument);
 void Start_CAN_Task(void *argument);
 void Start_BTN_Task(void *argument);
-void Start_BARO_Task(void *argument);
 void Start_RGB_Task(void *argument);
-void Start_BH1750_Task(void *argument);
-void Start_LPS22_Task(void *argument);
+void Start_UART_Task(void *argument);
 void Start_INPUT_Task(void *argument);
 void Start_OUTPUT_Task(void *argument);
 void Start_ADC_Task(void *argument);
+void Start_LCD_Task(void *argument);
+void Start_MULTISENSE_Task(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -272,6 +295,16 @@ int main(void)
   MX_TIM1_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
+  MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
+  MX_TIM8_Init();
+  MX_TIM9_Init();
+  MX_TIM10_Init();
+  MX_TIM11_Init();
+  MX_TIM12_Init();
+  MX_TIM14_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -279,9 +312,6 @@ int main(void)
 
 	HAL_TIM_PWM_Start(&htim13, TIM_CHANNEL_1);
 
-	//BH1750_sensor = BH1750_init_dev_struct(&hi2c2, "BH1750 device", true);
-
-	//BH1750_init_dev(BH1750_sensor);
 
 
   /* USER CODE END 2 */
@@ -324,17 +354,11 @@ int main(void)
   /* creation of BTN_Task */
   BTN_TaskHandle = osThreadNew(Start_BTN_Task, NULL, &BTN_Task_attributes);
 
-  /* creation of BARO_Task */
-  BARO_TaskHandle = osThreadNew(Start_BARO_Task, NULL, &BARO_Task_attributes);
-
   /* creation of RGB_Task */
   RGB_TaskHandle = osThreadNew(Start_RGB_Task, NULL, &RGB_Task_attributes);
 
-  /* creation of BH1750_Task */
-  BH1750_TaskHandle = osThreadNew(Start_BH1750_Task, NULL, &BH1750_Task_attributes);
-
-  /* creation of LPS22_Task */
-  LPS22_TaskHandle = osThreadNew(Start_LPS22_Task, NULL, &LPS22_Task_attributes);
+  /* creation of UART_Task */
+  UART_TaskHandle = osThreadNew(Start_UART_Task, NULL, &UART_Task_attributes);
 
   /* creation of INPUT_Task */
   INPUT_TaskHandle = osThreadNew(Start_INPUT_Task, NULL, &INPUT_Task_attributes);
@@ -344,6 +368,12 @@ int main(void)
 
   /* creation of ADC_Task */
   ADC_TaskHandle = osThreadNew(Start_ADC_Task, NULL, &ADC_Task_attributes);
+
+  /* creation of LCD_Task */
+  LCD_TaskHandle = osThreadNew(Start_LCD_Task, NULL, &LCD_Task_attributes);
+
+  /* creation of MULTISENSE_Task */
+  MULTISENSE_TaskHandle = osThreadNew(Start_MULTISENSE_Task, NULL, &MULTISENSE_Task_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
@@ -389,7 +419,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 6;
+  RCC_OscInitStruct.PLL.PLLM = 4;
   RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
@@ -819,8 +849,8 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -911,6 +941,537 @@ static void MX_TIM1_Init(void)
 }
 
 /**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 0;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 4294967295;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+  HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 0;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
+
+}
+
+/**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 0;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 65535;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+  HAL_TIM_MspPostInit(&htim4);
+
+}
+
+/**
+  * @brief TIM5 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM5_Init(void)
+{
+
+  /* USER CODE BEGIN TIM5_Init 0 */
+
+  /* USER CODE END TIM5_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM5_Init 1 */
+
+  /* USER CODE END TIM5_Init 1 */
+  htim5.Instance = TIM5;
+  htim5.Init.Prescaler = 0;
+  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim5.Init.Period = 4294967295;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim5, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM5_Init 2 */
+
+  /* USER CODE END TIM5_Init 2 */
+  HAL_TIM_MspPostInit(&htim5);
+
+}
+
+/**
+  * @brief TIM8 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM8_Init(void)
+{
+
+  /* USER CODE BEGIN TIM8_Init 0 */
+
+  /* USER CODE END TIM8_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+
+  /* USER CODE BEGIN TIM8_Init 1 */
+
+  /* USER CODE END TIM8_Init 1 */
+  htim8.Instance = TIM8;
+  htim8.Init.Prescaler = 0;
+  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim8.Init.Period = 65535;
+  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim8.Init.RepetitionCounter = 0;
+  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_PWM_ConfigChannel(&htim8, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim8, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
+  sBreakDeadTimeConfig.DeadTime = 0;
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim8, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM8_Init 2 */
+
+  /* USER CODE END TIM8_Init 2 */
+  HAL_TIM_MspPostInit(&htim8);
+
+}
+
+/**
+  * @brief TIM9 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM9_Init(void)
+{
+
+  /* USER CODE BEGIN TIM9_Init 0 */
+
+  /* USER CODE END TIM9_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM9_Init 1 */
+
+  /* USER CODE END TIM9_Init 1 */
+  htim9.Instance = TIM9;
+  htim9.Init.Prescaler = 0;
+  htim9.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim9.Init.Period = 65535;
+  htim9.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim9.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim9) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim9, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim9) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim9, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim9, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM9_Init 2 */
+
+  /* USER CODE END TIM9_Init 2 */
+  HAL_TIM_MspPostInit(&htim9);
+
+}
+
+/**
+  * @brief TIM10 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM10_Init(void)
+{
+
+  /* USER CODE BEGIN TIM10_Init 0 */
+
+  /* USER CODE END TIM10_Init 0 */
+
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM10_Init 1 */
+
+  /* USER CODE END TIM10_Init 1 */
+  htim10.Instance = TIM10;
+  htim10.Init.Prescaler = 0;
+  htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim10.Init.Period = 65535;
+  htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim10) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim10, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM10_Init 2 */
+
+  /* USER CODE END TIM10_Init 2 */
+  HAL_TIM_MspPostInit(&htim10);
+
+}
+
+/**
+  * @brief TIM11 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM11_Init(void)
+{
+
+  /* USER CODE BEGIN TIM11_Init 0 */
+
+  /* USER CODE END TIM11_Init 0 */
+
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM11_Init 1 */
+
+  /* USER CODE END TIM11_Init 1 */
+  htim11.Instance = TIM11;
+  htim11.Init.Prescaler = 0;
+  htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim11.Init.Period = 65535;
+  htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim11.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim11) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim11) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim11, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM11_Init 2 */
+
+  /* USER CODE END TIM11_Init 2 */
+  HAL_TIM_MspPostInit(&htim11);
+
+}
+
+/**
+  * @brief TIM12 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM12_Init(void)
+{
+
+  /* USER CODE BEGIN TIM12_Init 0 */
+
+  /* USER CODE END TIM12_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM12_Init 1 */
+
+  /* USER CODE END TIM12_Init 1 */
+  htim12.Instance = TIM12;
+  htim12.Init.Prescaler = 0;
+  htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim12.Init.Period = 65535;
+  htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim12) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim12, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim12) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim12, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim12, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM12_Init 2 */
+
+  /* USER CODE END TIM12_Init 2 */
+  HAL_TIM_MspPostInit(&htim12);
+
+}
+
+/**
   * @brief TIM13 Initialization Function
   * @param None
   * @retval None
@@ -953,6 +1514,52 @@ static void MX_TIM13_Init(void)
 
   /* USER CODE END TIM13_Init 2 */
   HAL_TIM_MspPostInit(&htim13);
+
+}
+
+/**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 0;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 65535;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim14, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+  HAL_TIM_MspPostInit(&htim14);
 
 }
 
@@ -1081,12 +1688,13 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOH, OUT_S0_Pin|OUT_E_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOJ, MULTISENSE_EN5_Pin|LED_PJ12_Pin|LED_PJ13_Pin|LED_PJ14_Pin
+  HAL_GPIO_WritePin(GPIOJ, MULTISENSE_EN2_Pin|MULTISENSE_EN3_Pin|MULTISENSE_EN4_Pin|MULTISENSE_EN5_Pin
+                          |MULTISENSE_EN6_Pin|LED_PJ12_Pin|LED_PJ13_Pin|LED_PJ14_Pin
                           |LED_PJ15_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOK, MULTISENSE_RST_Pin|MULTISENSE_SEL0_Pin|MULTISENSE_SEL1_Pin|CAN2_SEL0_Pin
-                          |CAN1_SEL0_Pin|CAN2_SEL0K7_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOK, MULTISENSE_EN0_Pin|MULTISENSE_EN1_Pin|MULTISENSE_RST_Pin|MULTISENSE_SEL0_Pin
+                          |MULTISENSE_SEL1_Pin|CAN2_SEL0_Pin|CAN1_SEL0_Pin|CAN2_SEL0K7_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_PI3_GPIO_Port, LED_PI3_Pin, GPIO_PIN_RESET);
@@ -1107,6 +1715,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : TOUCH_EN_Pin */
+  GPIO_InitStruct.Pin = TOUCH_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(TOUCH_EN_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : HALL_OUT_1_PI12_Pin */
   GPIO_InitStruct.Pin = HALL_OUT_1_PI12_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -1120,9 +1734,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MULTISENSE_EN5_Pin LED_PJ12_Pin LED_PJ13_Pin LED_PJ14_Pin
+  /*Configure GPIO pins : MULTISENSE_EN2_Pin MULTISENSE_EN3_Pin MULTISENSE_EN4_Pin MULTISENSE_EN5_Pin
+                           MULTISENSE_EN6_Pin LED_PJ12_Pin LED_PJ13_Pin LED_PJ14_Pin
                            LED_PJ15_Pin */
-  GPIO_InitStruct.Pin = MULTISENSE_EN5_Pin|LED_PJ12_Pin|LED_PJ13_Pin|LED_PJ14_Pin
+  GPIO_InitStruct.Pin = MULTISENSE_EN2_Pin|MULTISENSE_EN3_Pin|MULTISENSE_EN4_Pin|MULTISENSE_EN5_Pin
+                          |MULTISENSE_EN6_Pin|LED_PJ12_Pin|LED_PJ13_Pin|LED_PJ14_Pin
                           |LED_PJ15_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -1135,10 +1751,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MULTISENSE_RST_Pin MULTISENSE_SEL0_Pin MULTISENSE_SEL1_Pin CAN2_SEL0_Pin
-                           CAN1_SEL0_Pin CAN2_SEL0K7_Pin */
-  GPIO_InitStruct.Pin = MULTISENSE_RST_Pin|MULTISENSE_SEL0_Pin|MULTISENSE_SEL1_Pin|CAN2_SEL0_Pin
-                          |CAN1_SEL0_Pin|CAN2_SEL0K7_Pin;
+  /*Configure GPIO pins : MULTISENSE_EN0_Pin MULTISENSE_EN1_Pin MULTISENSE_RST_Pin MULTISENSE_SEL0_Pin
+                           MULTISENSE_SEL1_Pin CAN2_SEL0_Pin CAN1_SEL0_Pin CAN2_SEL0K7_Pin */
+  GPIO_InitStruct.Pin = MULTISENSE_EN0_Pin|MULTISENSE_EN1_Pin|MULTISENSE_RST_Pin|MULTISENSE_SEL0_Pin
+                          |MULTISENSE_SEL1_Pin|CAN2_SEL0_Pin|CAN1_SEL0_Pin|CAN2_SEL0K7_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -1180,6 +1796,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SPI1_FLASH_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
 }
 
 /* USER CODE BEGIN 4 */
@@ -1193,6 +1813,15 @@ long mapInt(float x, float in_min, float in_max, int out_min, int out_max) {
 	return (int) ((x - in_min) * (out_max - out_min) / (in_max - in_min)
 			+ out_min);
 }
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if(GPIO_Pin == INT_PIN)
+  {
+	  TOUCH_Set();
+  }
+}
+
 
 /* USER CODE END 4 */
 
@@ -1208,21 +1837,43 @@ void Start_START_Task(void *argument)
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 5 */
-	//htim13.Instance->CCR1 = (htim13.Instance->ARR) * 0.99;
-	Current_Status.LED_BRIGHTNESS = LED_DEFAULT_BRIGHTNESS;
-	Current_Status.LCD_BRIGHTNESS = LCD_DEFAULT_BRIGHTNESS;
-	Current_Status.LCD_BRIGHTNESS_CHANGED = 1;
-	/* Infinite loop */
-	for (;;) {
-		if (Current_Status.LCD_BRIGHTNESS_CHANGED == 1) {
-			htim13.Instance->CCR1 = Current_Status.LCD_BRIGHTNESS;
-			Current_Status.LCD_BRIGHTNESS_CHANGED = 0;
-		}
-//		Current_Status.ECT = 50;
-//		Current_Status.IAT = 50;
-//        Current_Status.RPM = Current_Status.RPM <= 8000 ? Current_Status.RPM + 25 : 0;
-		osDelay(10);
+
+
+  //
+  //
+  	uint32_t Address = 0x081E0000;
+  	uint8_t txData[8] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77};
+  	uint8_t rxData[8];
+  //
+  //	FLASH_SetSectorAddrs(23, 0x081E0000);
+  //
+  //	FLASH_WriteN(0, txData, 8, DATA_TYPE_8);
+  //	FLASH_ReadN(0, rxData, 8, DATA_TYPE_8);
+  //
+
+  	#define PAGE(_x) _x* 0x100;
+  	#define SEC(_x)  _x* 0x1000;
+  	#define BLK(_x)  _x* 0x10000;
+  	uint32_t  StartAddress = SEC(7);
+
+  	W25qxx_Init();
+
+  //	w25q128.PageSize=256;
+  //	w25q128.SectorSize=4096;
+  //	w25q128.SectorCount=4096;
+  //	w25q128.PageCount=65536;
+  //	w25q128.BlockSize=65536;
+  //	w25q128.CapacityInBytes=16384;
+  	uint8_t rBuff[16];
+  	W25qxx_EraseSector(0); // erase page 0~15;
+  	W25qxx_WritePage("0123456789", 0, 0, 10);
+  	W25qxx_ReadPage(rBuff, 0,0,10);
+
+  	for (;;) {
+		osDelay(1);
 	}
+
+
   /* USER CODE END 5 */
 }
 
@@ -1272,8 +1923,8 @@ void Start_LED_Task(void *argument)
   /* USER CODE BEGIN Start_LED_Task */
 	/* Infinite loop */
 	for (;;) {
-		osDelay(1);
-
+		HAL_GPIO_TogglePin(LED_PJ12_GPIO_Port, LED_PJ12_Pin);
+		osDelay(1000);
 	}
   /* USER CODE END Start_LED_Task */
 }
@@ -1723,65 +2374,9 @@ void Start_BTN_Task(void *argument)
 		Current_Status.IND_ECT = Current_Status.BTN_BOTTOM_RIGHT;
 		Current_Status.IND_OIL = Current_Status.BTN_BOTTOM_RIGHT;
 
-//		Current_Status.BTN_BOTTOM_RIGHT = HAL_GPIO_ReadPin(BTN_2_GPIO_Port,
-//		BTN_2_Pin);
-//		Current_Status.BTN_BOTTOM_LEFT = HAL_GPIO_ReadPin(BTN_4_GPIO_Port,
-//		BTN_4_Pin);
-//
-//		if (Current_Status.BTN_BOTTOM_LEFT == 1
-//				&& Current_Status.LCD_BRIGHTNESS_CHANGED == 0) {
-//			Current_Status.LCD_BRIGHTNESS =
-//					Current_Status.LCD_BRIGHTNESS >= 50 ?
-//							Current_Status.LCD_BRIGHTNESS - 50 :
-//							Current_Status.LCD_BRIGHTNESS;
-//			Current_Status.LCD_BRIGHTNESS_CHANGED = 1;
-//		} else if (Current_Status.BTN_BOTTOM_RIGHT == 1
-//				&& Current_Status.LCD_BRIGHTNESS_CHANGED == 0) {
-//			Current_Status.LCD_BRIGHTNESS =
-//					Current_Status.LCD_BRIGHTNESS <= 1000 ?
-//							Current_Status.LCD_BRIGHTNESS + 50 :
-//							Current_Status.LCD_BRIGHTNESS;
-//			Current_Status.LCD_BRIGHTNESS_CHANGED = 1;
-//		} else {
-//			Current_Status.LCD_BRIGHTNESS_CHANGED = 0;
-//		}
-//
-//		uint8_t in16 = HAL_GPIO_ReadPin(HALL_OUT_1_PI12_GPIO_Port,
-//		HALL_OUT_1_PI12_Pin);
-
-		//htim9.Instance->CCR1 = Current_Status.BTN_TOP_LEFT == 1 ? crr1 - 1 : 0;
-		//htim9.Instance->CCR2 = in16 == 0 ? crr2 - 1 : 0;
-
-//		Current_Status.IND_LEFT =
-//				Current_Status.BTN_TOP_LEFT == 1 && htim9.Instance->CNT < crr1 ?
-//						true : false;
-//		Current_Status.IND_RIGHT =
-//				in16 == 0 && htim9.Instance->CNT < crr2 ? true : false;
-
-		//Current_Status.ECT = htim9.Instance->CNT;
-
 		osDelay(1);
 	}
   /* USER CODE END Start_BTN_Task */
-}
-
-/* USER CODE BEGIN Header_Start_BARO_Task */
-/**
- * @brief Function implementing the BARO_Task thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_Start_BARO_Task */
-void Start_BARO_Task(void *argument)
-{
-  /* USER CODE BEGIN Start_BARO_Task */
-	/* Infinite loop */
-	for (;;) {
-
-		HAL_GPIO_TogglePin(LED_PJ12_GPIO_Port, LED_PJ12_Pin);
-		osDelay(1000);
-	}
-  /* USER CODE END Start_BARO_Task */
 }
 
 /* USER CODE BEGIN Header_Start_RGB_Task */
@@ -1855,66 +2450,42 @@ void Start_RGB_Task(void *argument)
   /* USER CODE END Start_RGB_Task */
 }
 
-/* USER CODE BEGIN Header_Start_BH1750_Task */
+/* USER CODE BEGIN Header_Start_UART_Task */
 /**
- * @brief Function implementing the BH1750_Task thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_Start_BH1750_Task */
-void Start_BH1750_Task(void *argument)
+* @brief Function implementing the UART_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Start_UART_Task */
+void Start_UART_Task(void *argument)
 {
-  /* USER CODE BEGIN Start_BH1750_Task */
-	uint8_t changInProgress = 0;
-	/* Infinite loop */
-	for (;;) {
-		if (BH1750_ENABLED) {
-			BH1750_sensor->poll(BH1750_sensor);
-			Current_Status.BH1750_LUX = BH1750_sensor->value;
-			Current_Status.LCD_BRIGHTNESS = mapInt(Current_Status.BH1750_LUX, 0,
-					100, 0, 100);
-			Current_Status.LCD_BRIGHTNESS =
-					Current_Status.LCD_BRIGHTNESS > 100 ?
-							100 : Current_Status.LCD_BRIGHTNESS;
-			Current_Status.LCD_BRIGHTNESS =
-					Current_Status.LCD_BRIGHTNESS <= 1 ?
-							1 : Current_Status.LCD_BRIGHTNESS;
-			Current_Status.LCD_BRIGHTNESS_CHANGED = 1;
-			if (Current_Status.LCD_BRIGHTNESS_CHANGED == 1
-					&& !changInProgress) {
-				changInProgress = 1;
-				Current_Status.LED_BRIGHTNESS =
-						(int) (Current_Status.LCD_BRIGHTNESS / 5);
-				Current_Status.LED_BRIGHTNESS =
-						Current_Status.LED_BRIGHTNESS <= 1 ?
-								1 : Current_Status.LED_BRIGHTNESS;
-				Current_Status.LCD_BRIGHTNESS_CHANGED = 0;
-				changInProgress = 0;
-			}
-			//Current_Status.RPM = Current_Status.BH1750_LUX;
-			osDelay(200);
-		} else {
-			osDelay(60000);
-		}
-	}
-  /* USER CODE END Start_BH1750_Task */
-}
+  /* USER CODE BEGIN Start_UART_Task */
 
-/* USER CODE BEGIN Header_Start_LPS22_Task */
-/**
- * @brief Function implementing the LPS22_Task thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_Start_LPS22_Task */
-void Start_LPS22_Task(void *argument)
-{
-  /* USER CODE BEGIN Start_LPS22_Task */
-	/* Infinite loop */
-	for (;;) {
+	UART_recieved = 0;
+	uint32_t count = 0;
+  /* Infinite loop */
+  for(;;)
+  {
+		uint8_t buffer[] = "Hello, World!\r\n";
+		CDC_Transmit_FS(buffer, sizeof(buffer));
+
+		if(UART_recieved)
+		{
+			char c = (char)UART_buffer[0];
+			scanf("%c", &c);
+			switch (c) {
+				case 'c':
+
+					break;
+				default:
+					break;
+			}
+			UART_recieved = 0;
+		}
+
 		osDelay(1000);
-	}
-  /* USER CODE END Start_LPS22_Task */
+  }
+  /* USER CODE END Start_UART_Task */
 }
 
 /* USER CODE BEGIN Header_Start_INPUT_Task */
@@ -1966,35 +2537,6 @@ void Start_INPUT_Task(void *argument)
 void Start_OUTPUT_Task(void *argument)
 {
   /* USER CODE BEGIN Start_OUTPUT_Task */
-//
-//
-	uint32_t Address = 0x081E0000;
-	uint8_t txData[8] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77};
-	uint8_t rxData[8];
-//
-//	FLASH_SetSectorAddrs(23, 0x081E0000);
-//
-//	FLASH_WriteN(0, txData, 8, DATA_TYPE_8);
-//	FLASH_ReadN(0, rxData, 8, DATA_TYPE_8);
-//
-
-	#define PAGE(_x) _x* 0x100;
-	#define SEC(_x)  _x* 0x1000;
-	#define BLK(_x)  _x* 0x10000;
-	uint32_t  StartAddress = SEC(7);
-
-	W25qxx_Init();
-
-//	w25q128.PageSize=256;
-//	w25q128.SectorSize=4096;
-//	w25q128.SectorCount=4096;
-//	w25q128.PageCount=65536;
-//	w25q128.BlockSize=65536;
-//	w25q128.CapacityInBytes=16384;
-	uint8_t rBuff[16];
-	W25qxx_EraseSector(0); // erase page 0~15;
-	W25qxx_WritePage("0123456789", 0, 0, 10);
-	W25qxx_ReadPage(rBuff, 0,0,10);
 
 	//MESSAGE
 	CAN_Message msg;
@@ -2051,8 +2593,6 @@ void Start_OUTPUT_Task(void *argument)
 
 	/* Infinite loop */
 	for (;;) {
-
-
 		TxHeader.IDE = signal_OUT.IdType == CAN_ENUM_MESSAGE_ID_STANDARD ? CAN_ID_STD : CAN_ID_EXT;
 		TxHeader.RTR = CAN_RTR_DATA;
 		TxHeader.DLC = 8;
@@ -2098,9 +2638,6 @@ void Start_ADC_Task(void *argument)
   /* USER CODE BEGIN Start_ADC_Task */
 	/* Infinite loop */
 	for (;;) {
-		uint8_t buffer[] = "Hello, World!\r\n";
-		CDC_Transmit_FS(buffer, sizeof(buffer));
-		osDelay(1000);
 
 		ADC_ChannelConfTypeDef sConfig = { 0 };
 		//sConfig.Channel = ADC_CHANNEL_1; //IN
@@ -2123,6 +2660,103 @@ void Start_ADC_Task(void *argument)
 		osDelay(1000);
 	}
   /* USER CODE END Start_ADC_Task */
+}
+
+/* USER CODE BEGIN Header_Start_LCD_Task */
+/**
+* @brief Function implementing the LCD_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Start_LCD_Task */
+void Start_LCD_Task(void *argument)
+{
+  /* USER CODE BEGIN Start_LCD_Task */
+  /* Infinite loop */
+	Current_Status.LED_BRIGHTNESS = LED_DEFAULT_BRIGHTNESS;
+	Current_Status.LCD_BRIGHTNESS = LCD_DEFAULT_BRIGHTNESS;
+	Current_Status.LCD_BRIGHTNESS_CHANGED = 1;
+	/* Infinite loop */
+	for (;;) {
+		if (Current_Status.LCD_BRIGHTNESS_CHANGED == 1) {
+			htim13.Instance->CCR1 = Current_Status.LCD_BRIGHTNESS;
+			Current_Status.LCD_BRIGHTNESS_CHANGED = 0;
+		}
+		osDelay(100);
+	}
+  /* USER CODE END Start_LCD_Task */
+}
+
+/* USER CODE BEGIN Header_Start_MULTISENSE_Task */
+/**
+* @brief Function implementing the MULTISENSE_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Start_MULTISENSE_Task */
+void Start_MULTISENSE_Task(void *argument)
+{
+  /* USER CODE BEGIN Start_MULTISENSE_Task */
+
+
+	ADC_ChannelConfTypeDef sConfig = { 0 };
+	sConfig.Channel = ADC_CHANNEL_11; //MULTISENSE_ADC
+	sConfig.Rank = 1;
+	sConfig.SamplingTime = ADC_SAMPLETIME_15CYCLES;
+
+	if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK) {
+		Error_Handler();
+	}
+  /* Infinite loop */
+  for(;;)
+  {
+
+	HAL_GPIO_WritePin(MULTISENSE_RST_GPIO_Port, MULTISENSE_RST_Pin , 0);
+
+
+	for (int i = 0; i < 16; ++i) {
+
+		HAL_GPIO_WritePin(MULTISENSE_EN0_GPIO_Port, MULTISENSE_EN0_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_EN1_GPIO_Port, MULTISENSE_EN1_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_EN2_GPIO_Port, MULTISENSE_EN2_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_EN3_GPIO_Port, MULTISENSE_EN3_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_EN4_GPIO_Port, MULTISENSE_EN4_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_EN5_GPIO_Port, MULTISENSE_EN5_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_EN6_GPIO_Port, MULTISENSE_EN6_Pin, 0);
+		HAL_GPIO_WritePin(MULTISENSE_SEL0_GPIO_Port, MULTISENSE_SEL0_Pin , 0);
+		HAL_GPIO_WritePin(MULTISENSE_SEL1_GPIO_Port, MULTISENSE_SEL1_Pin , 0);
+
+
+
+		switch (i) {
+			case 6:
+				HAL_GPIO_WritePin(MULTISENSE_IN6_GPIO_Port, MULTISENSE_IN6_Pin, 1);
+				HAL_GPIO_WritePin(MULTISENSE_EN3_GPIO_Port, MULTISENSE_EN3_Pin, 1);
+				HAL_GPIO_WritePin(MULTISENSE_SEL0_GPIO_Port, MULTISENSE_SEL0_Pin , 0);
+				HAL_GPIO_WritePin(MULTISENSE_SEL1_GPIO_Port, MULTISENSE_SEL1_Pin , 0);
+				break;
+			case 7:
+				HAL_GPIO_WritePin(MULTISENSE_IN7_GPIO_Port, MULTISENSE_IN7_Pin, 1);
+				HAL_GPIO_WritePin(MULTISENSE_EN3_GPIO_Port, MULTISENSE_EN3_Pin, 1);
+				HAL_GPIO_WritePin(MULTISENSE_SEL0_GPIO_Port, MULTISENSE_SEL0_Pin , 0);
+				HAL_GPIO_WritePin(MULTISENSE_SEL1_GPIO_Port, MULTISENSE_SEL1_Pin , 1);
+				break;
+			default:
+				break;
+		}
+
+		uint32_t ADCValue = 0;
+		HAL_ADC_Start(&hadc1);
+		HAL_ADC_PollForConversion(&hadc1, 1000);
+		ADCValue = HAL_ADC_GetValue(&hadc1);
+		HAL_ADC_Stop(&hadc1);
+
+		uint16_t multiADC = (ADCValue * 749) * (3.3 / 4096);
+		Current_Status.LAMBDA1 = (ADCValue * 749) * (3.3 / 4096);
+	}
+    osDelay(1000);
+  }
+  /* USER CODE END Start_MULTISENSE_Task */
 }
 
 /**

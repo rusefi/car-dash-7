@@ -12,6 +12,8 @@ J. Bajic - 2020.
 #define INT_PORT				GPIOI
 #define INT_PIN					GPIO_PIN_11
 
+#define FT5XX6_FLIP_AXIS		1
+
 /*Addr*/
 #define FT5XX6_MODE 			0x00
 #define FT5XX6_GEST_ID 			0x01
