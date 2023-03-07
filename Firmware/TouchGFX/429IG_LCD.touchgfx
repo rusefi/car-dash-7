@@ -1,0 +1,816 @@
+{
+  "Application": {
+    "Screens": [
+      {
+        "Name": "Screen1",
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "box1",
+            "X": -3,
+            "Y": 1,
+            "Width": 1024,
+            "Height": 600
+          },
+          {
+            "Type": "Image",
+            "Name": "image1",
+            "X": -2,
+            "Y": -8,
+            "Width": 1027,
+            "Height": 617,
+            "RelativeFilename": "race_dash_full.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indLeft",
+            "X": 264,
+            "Y": 32,
+            "Width": 65,
+            "Height": 42,
+            "RelativeFilename": "indLeft.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indRight",
+            "X": 721,
+            "Y": 32,
+            "Width": 65,
+            "Height": 42,
+            "RelativeFilename": "indRight.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indHigh",
+            "X": 375,
+            "Y": 289,
+            "Width": 49,
+            "Height": 28,
+            "RelativeFilename": "indHigh.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indFuel",
+            "X": 597,
+            "Y": 191,
+            "Width": 32,
+            "Height": 40,
+            "RelativeFilename": "indFuel.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indOil",
+            "X": 385,
+            "Y": 364,
+            "Width": 67,
+            "Height": 28,
+            "RelativeFilename": "indOil.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indBatt",
+            "X": 413,
+            "Y": 194,
+            "Width": 49,
+            "Height": 38,
+            "RelativeFilename": "indBatt.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indPark",
+            "X": 499,
+            "Y": 155,
+            "Width": 56,
+            "Height": 41,
+            "RelativeFilename": "indPark.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indDTC",
+            "X": 488,
+            "Y": 218,
+            "Width": 75,
+            "Height": 36,
+            "RelativeFilename": "indDTC.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indECT",
+            "X": 449,
+            "Y": 400,
+            "Width": 45,
+            "Height": 40,
+            "RelativeFilename": "indECT.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "indLow",
+            "X": 447,
+            "Y": 290,
+            "Width": 48,
+            "Height": 30,
+            "RelativeFilename": "indLow.png"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "map_value",
+            "X": 951,
+            "Y": 9,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_LQYM",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_1H44",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "map_label",
+            "X": 885,
+            "Y": 100,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_W2NZ",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_FXL2",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "map_units",
+            "X": 775,
+            "Y": 100,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_G76O",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_13X6",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "batt_value",
+            "X": 951,
+            "Y": 157,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_391O",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_TSMP",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "batt_label",
+            "X": 884,
+            "Y": 247,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_4QE0",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_RUP7",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "batt_units",
+            "X": 827,
+            "Y": 247,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_6YBF",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_F7I8",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "tps_value",
+            "X": 951,
+            "Y": 308,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_MP7X",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_AYOA",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "tps_label",
+            "X": 884,
+            "Y": 400,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_L5WH",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_VMJT",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "tps_units",
+            "X": 809,
+            "Y": 399,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_RPXE",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_L3HM",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lambda_value",
+            "X": 951,
+            "Y": 455,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_TLZY",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_2H8W",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lambda_label",
+            "X": 884,
+            "Y": 547,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_RLOQ",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_JQKX",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lambda_units",
+            "X": 695,
+            "Y": 547,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_KCKH",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_J843",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "ect_value",
+            "X": 27,
+            "Y": 9,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_LD25",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_6GW0",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "ect_label",
+            "X": 30,
+            "Y": 97,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_4T7D",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_P413",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "ect_units",
+            "X": 169,
+            "Y": 97,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_ERKY",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_NFMY",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "iat_value",
+            "X": 27,
+            "Y": 157,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_Z15X",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_H85L",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "iat_label",
+            "X": 30,
+            "Y": 246,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_S5UQ",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_K94Y",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "iat_units",
+            "X": 110,
+            "Y": 246,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_XBZK",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_S9CZ",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "oilp_value",
+            "X": 27,
+            "Y": 308,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_GFHB",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_DHUY",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "oilp_label",
+            "X": 30,
+            "Y": 400,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_BVOP",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_9VHS",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "oilp_units",
+            "X": 133,
+            "Y": 400,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_R7A4",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_9IGG",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "fuelp_value",
+            "X": 27,
+            "Y": 455,
+            "Width": 44,
+            "Height": 97,
+            "TextId": "__SingleUse_0AFA",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_C87O",
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "fuelp_label",
+            "X": 30,
+            "Y": 547,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_MPLH",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_4VJ9",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "fuelp_units",
+            "X": 243,
+            "Y": 547,
+            "Width": 101,
+            "Height": 31,
+            "TextId": "__SingleUse_INAE",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "__SingleUse_L52U",
+              "UseBuffer": true,
+              "BufferSize": 10
+            }
+          },
+          {
+            "Type": "Gauge",
+            "Name": "gauge1",
+            "X": 225,
+            "Y": -1,
+            "Width": 600,
+            "Height": 600,
+            "RotationCenterX": 300.0,
+            "RotationCenterY": 300.0,
+            "EndAngle": 240.0,
+            "RangeMax": 8000.0,
+            "Easing": "Linear",
+            "EasingOption": "In",
+            "FileNameNeedle": "needel.png",
+            "NeedleRotationCenterX": 16.0,
+            "NeedleRotationCenterY": 16.0,
+            "NeedleMovingRenderingAlgorithm": "Bilinear Interpolation",
+            "NeedleSteadyRenderingAlgorithm": "Bilinear Interpolation",
+            "ArcColor": {
+              "Red": 196,
+              "Green": 22,
+              "Blue": 22
+            },
+            "ArcCapStyle": "Butt",
+            "ArcOnTopOfNeedle": true
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "flexButton1",
+            "X": 859,
+            "Width": 165,
+            "Height": 601,
+            "Alpha": 0,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 165,
+                "Height": 601,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Green": 102,
+                  "Blue": 153
+                },
+                "ColorPressed": {
+                  "Green": 153,
+                  "Blue": 204
+                },
+                "ColorBorderReleased": {
+                  "Green": 51,
+                  "Blue": 102
+                },
+                "ColorBorderPressed": {
+                  "Red": 51,
+                  "Green": 102,
+                  "Blue": 153
+                }
+              }
+            ],
+            "Clickable": true
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "Interaction1",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "flexButton1"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen2"
+            }
+          }
+        ]
+      },
+      {
+        "Name": "Screen2",
+        "Components": [
+          {
+            "Type": "Image",
+            "Name": "image1",
+            "X": 12,
+            "Width": 1000,
+            "Height": 600,
+            "RelativeFilename": "basic_bg.png"
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "flexButton1",
+            "Y": -1,
+            "Width": 165,
+            "Height": 601,
+            "Alpha": 0,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 165,
+                "Height": 601,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Green": 102,
+                  "Blue": 153
+                },
+                "ColorPressed": {
+                  "Green": 153,
+                  "Blue": 204
+                },
+                "ColorBorderReleased": {
+                  "Green": 51,
+                  "Blue": 102
+                },
+                "ColorBorderPressed": {
+                  "Red": 51,
+                  "Green": 102,
+                  "Blue": 153
+                }
+              }
+            ],
+            "Clickable": true
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "Interaction1",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "flexButton1"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "Screen1"
+            }
+          }
+        ]
+      }
+    ],
+    "CustomContainerDefinitions": [],
+    "Name": "MyApplication",
+    "Resolution": {
+      "Width": 1024,
+      "Height": 600
+    },
+    "SelectedColorDepth": 16,
+    "StartupScreenName": "Screen1",
+    "SelectedStartupLanguage": "GB",
+    "TouchGfxPath": "../Middlewares/ST/touchgfx",
+    "UIPath": ".",
+    "AvailableColorDepths": [
+      16
+    ],
+    "AvailableLCDs": {
+      "16": "LCD16bpp"
+    },
+    "AvailableSections": [
+      "ExtFlashSection",
+      "IntFlashSection"
+    ],
+    "AvailableResolutions": [
+      {
+        "Width": 1024,
+        "Height": 600
+      }
+    ],
+    "PhysicalButtons": [],
+    "FrameworkFeatures": {
+      "LCD16bpp": {
+        "Id": "LCD16bpp",
+        "IsEnabled": true
+      }
+    },
+    "GenerateAssetsCommand": "make -f simulator/gcc/Makefile assets -j8",
+    "PostGenerateCommand": "touchgfx update_project --project-file=simulator/msvs/Application.vcxproj",
+    "PostGenerateTargetCommand": "touchgfx update_project",
+    "CompileSimulatorCommand": "make -f simulator/gcc/Makefile -j8",
+    "RunSimulatorCommand": "build\\bin\\simulator.exe",
+    "LandscapeSkinX": 0,
+    "LandscapeSkinY": 0,
+    "PortraitSkinX": 0,
+    "PortraitSkinY": 0,
+    "DisplayOrientation": "Landscape",
+    "Family": "STM32F4",
+    "SubFamily": "STM32F429/439",
+    "Platform": "m4",
+    "ProjectFile": "../LCD_CAR.ioc",
+    "OptionalComponentsRoot": "../Middlewares/ST/touchgfx_components",
+    "OptionalComponents": []
+  },
+  "Version": "4.21.1"
+}
