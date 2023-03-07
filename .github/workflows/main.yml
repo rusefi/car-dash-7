@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+    
     - name: Generate Pinouts
       uses: chuckwagoncomputing/interactive-pinout@2.1
       with:
-        mapping-path: ./hardware/pinout/*.yaml
+        mapping-path: ./Hardware/pinout/*.yaml
         warnings: "false"
         warning-dupe: "error"
         columns: |
