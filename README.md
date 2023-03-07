@@ -1,5 +1,8 @@
 # Digital Dash project using STM32F429BI board with 7" 1024x600 RGB Interface IPS LCD Module With Capacitive Touch Panel
 
+![WhatsApp Image 2023-03-06 at 17 48 35](https://user-images.githubusercontent.com/12942077/223524854-5e433ace-8e8b-40de-b243-9b33b157df4b.jpeg)
+
+
 Build on STM32CubeIDE 1.11.2 and TouchGFX 4.21.1
 
 # Hardware
@@ -29,5 +32,10 @@ STLink v2
 [TE Connectivity 770680-1, 23 Contacts,  Female](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/770680-1?qs=VZ9FDhhp7SlzrSvV9U4a0A%3D%3D)
 
 [Aliexpress](https://www.aliexpress.com/item/1005002928233144.html?spm=a2g0o.order_list.order_list_main.329.2e321802ua6xF9)
+
+
+# Dispay in action
+
+[Link](https://github.com/opelpanfan/car-dash-7/blob/main/Hardware/photos/VID-20230227-WA0005.mp4)
 
 
