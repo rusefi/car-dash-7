@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-
     - name: Generate Pinouts
       uses: chuckwagoncomputing/interactive-pinout@2.1
       with:
