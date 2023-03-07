@@ -21,7 +21,6 @@ jobs:
         columns: |
           {
           "pin":"Pin Number",
-          "ts_name":"TS Name",
           "type":"Type",
           "function":"Typical Function",
           "color":"Pigtail Color"
