@@ -1,0 +1,37 @@
+pins:
+  - pin: 1
+    type: 12V
+    function: 12V Supply from main relay output
+
+  - pin: 2
+    type: pgnd
+    function: Power GND
+
+  - pin: 3
+    type: ls
+    function: Idle solenoid
+
+  - pin: 4
+    type: etb
+    function: ETB+
+
+info:
+  title: 6.86 Dash
+  name: Main Connector
+  board_url: https://github.com/opelpanfan/car-dash-wide
+  cid: c1
+  image:
+    file: back.png
+  pins:
+    - pin: 1
+      x: 1508
+      y: 958
+    - pin: 2
+      x: 1508
+      y: 787
+    - pin: 3
+      x: 1508
+      y: 616
+    - pin: 4
+      x: 1508
+      y: 445
