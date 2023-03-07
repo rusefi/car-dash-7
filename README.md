@@ -4,6 +4,7 @@ Build on STM32CubeIDE 1.11.2 and TouchGFX 4.21.1
 
 # Hardware
 
+* [7 inc IPS screen](http://www.lcdwiki.com/7.0inch_RGB_Display)
 * STM32f429BI
 * SDRAM W9825G6KH-6I
 * 2 CANBUS
