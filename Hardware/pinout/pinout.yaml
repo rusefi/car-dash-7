@@ -18,7 +18,7 @@ pins:
 info:
   title: 7" Dashboard
   name: Main Connector
-  directory: pinout
+  directory: generated
   board_url: https://github.com/opelpanfan/car-dash-7
   cid: c1
   image:
