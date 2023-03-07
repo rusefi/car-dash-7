@@ -33,6 +33,16 @@ STLink v2
 
 [Aliexpress](https://www.aliexpress.com/item/1005002928233144.html?spm=a2g0o.order_list.order_list_main.329.2e321802ua6xF9)
 
+# Connector pinout
+
+Looking from the back of the dash
+![back](https://user-images.githubusercontent.com/12942077/223533654-92d001a3-146c-4abf-9319-0453434004cc.png)
+
+Left
+![left_connector](https://user-images.githubusercontent.com/12942077/223532623-71afa31b-5c37-4b8b-8fe8-a2cdf9893196.png)
+
+Right
+![right_connector](https://user-images.githubusercontent.com/12942077/223532640-d616144e-3f50-43a5-acf2-b9abf488b4c5.png)
 
 # Dispay in action
 
