@@ -24,3 +24,10 @@ STLink v2
 
 # Connector Part Numbers
 
+[TE Connectivity 776228-1, 23 Contacts,  Male](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/776228-1?qs=YqNA2qefETD31MBKizKIJw%3D%3D)
+
+[TE Connectivity 770680-1, 23 Contacts,  Female](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/770680-1?qs=VZ9FDhhp7SlzrSvV9U4a0A%3D%3D)
+
+[Aliexpress](https://www.aliexpress.com/item/1005002928233144.html?spm=a2g0o.order_list.order_list_main.329.2e321802ua6xF9)
+
+
