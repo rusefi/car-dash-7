@@ -56,10 +56,3 @@ jobs:
           "usb":"lightseagreen",
           "vr":"sienna"
           }
-          
-    - name: Upload pinouts
-      uses: actions/upload-artifact@v3
-      with:
-        name: artifacts
-        path: pinouts/generated/index.html
-        
