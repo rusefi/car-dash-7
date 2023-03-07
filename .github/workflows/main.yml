@@ -2,7 +2,8 @@ name: Generate Interactive Pinouts
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  
+  workflow_dispatch:
 
 jobs:
   generate:
