@@ -13,7 +13,7 @@ jobs:
     - name: Generate Pinouts
       uses: chuckwagoncomputing/interactive-pinout@2.1
       with:
-        mapping-path: ./hardware/pinout/pinout.yaml
+        mapping-path: ./hardware/pinout/*.yaml
         warnings: "false"
         warning-dupe: "error"
         columns: |
