@@ -14,6 +14,10 @@ Build on STM32CubeIDE 1.11.2 and TouchGFX 4.21.1
 * W2812 RGB LED
 * on-board USB for debugging
 
+# Screen can be purchased from 
+
+[Aliexpress](https://www.aliexpress.com/item/1005004132012896.html?spm=a2g0o.order_list.order_list_main.206.2e321802ua6xF9)
+
 # Initial Programming
 
 STLink v2
