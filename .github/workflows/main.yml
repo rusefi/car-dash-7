@@ -41,13 +41,13 @@ jobs:
           ]
         colors: |
           {
-          "12v":"red";
-          "12hs":"red";
+          "12v":"red",
+          "12hs":"red",
           "5v":"yellow",
           "in":"green",
           "can":"blue",
           "gnd":"black",
-          "hs":"indigo",
+          "out":"indigo",
           }
     - name: Setup Pages
       uses: actions/configure-pages@v3

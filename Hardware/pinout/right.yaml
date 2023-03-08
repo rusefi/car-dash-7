@@ -1,35 +1,35 @@
 pins:
   - pin: 1
     function: Highside Output 2
-    type: hs
+    type: out
     
   - pin: 2
     function: Highside Output 3
-    type: hs
+    type: out
     
   - pin: 3
     function: Highside Output 0
-    type: hs
+    type: out
     
   - pin: 4
     function: Highside Output 1
-    type: hs
+    type: out
     
   - pin: 5
     function: Highside Output 8
-    type: hs
+    type: out
     
   - pin: 6
     function: Highside Output 9
-    type: hs
+    type: out
     
   - pin: 7
     function: Highside Output 12
-    type: hs
+    type: out
     
   - pin: 8
     function: Highside Output 13
-    type: hs
+    type: out
     
   - pin: 9
     function: Power supply to Highside outputs from battery.
@@ -61,35 +61,35 @@ pins:
 
   - pin: 16
     function: Highside Output 7
-    type: hs
+    type: out
     
   - pin: 17
     function: Highside Output 6
-    type: hs
+    type: out
     
   - pin: 18
     function: Highside Output 5
-    type: hs
+    type: out
     
   - pin: 19
     function: Highside Output 4
-    type: hs
+    type: out
     
   - pin: 20
     function: Highside Output 11
-    type: hs
+    type: out
     
   - pin: 21
     function: Highside Output 10
-    type: hs
+    type: out
     
   - pin: 22
     function: Highside Output 15
-    type: hs
+    type: out
     
   - pin: 23
     function: Highside Output 14
-    type: hs
+    type: out
 
 info:
   title: 7" Dashboard
