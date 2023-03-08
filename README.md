@@ -19,7 +19,7 @@ Build on STM32CubeIDE 1.11.2 and TouchGFX 4.21.1
 
 # Screen can be purchased from 
 
-[Aliexpress](https://www.aliexpress.com/item/1005004132012896.html?spm=a2g0o.order_list.order_list_main.206.2e321802ua6xF9)
+[Aliexpress](https://www.aliexpress.com/item/1005004132012896.html?spm=a2g0o.order_list.order_list_main.206.2e321802ua6xF9){:target="_blank" rel="noopener"}
 
 # Initial Programming
 
@@ -27,11 +27,11 @@ STLink v2
 
 # Connector Part Numbers
 
-[TE Connectivity 776228-1, 23 Contacts,  Male](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/776228-1?qs=YqNA2qefETD31MBKizKIJw%3D%3D)
+[TE Connectivity 776228-1, 23 Contacts,  Male](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/776228-1?qs=YqNA2qefETD31MBKizKIJw%3D%3D){:target="_blank" rel="noopener"}
 
-[TE Connectivity 770680-1, 23 Contacts,  Female](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/770680-1?qs=VZ9FDhhp7SlzrSvV9U4a0A%3D%3D)
+[TE Connectivity 770680-1, 23 Contacts,  Female](https://www.mouser.co.uk/ProductDetail/TE-Connectivity/770680-1?qs=VZ9FDhhp7SlzrSvV9U4a0A%3D%3D){:target="_blank" rel="noopener"}
 
-[Aliexpress](https://www.aliexpress.com/item/1005002928233144.html?spm=a2g0o.order_list.order_list_main.329.2e321802ua6xF9)
+[Aliexpress](https://www.aliexpress.com/item/1005002928233144.html?spm=a2g0o.order_list.order_list_main.329.2e321802ua6xF9){:target="_blank" rel="noopener"}
 
 # Connector pinout
 
@@ -39,12 +39,12 @@ Looking from the back of the dash
 
 ![back](https://user-images.githubusercontent.com/12942077/223533654-92d001a3-146c-4abf-9319-0453434004cc.png)
 
-[Left](https://opelpanfan.github.io/car-dash-7/pinout/?connector=left23)
+[Left](https://opelpanfan.github.io/car-dash-7/pinout/?connector=left23&pin=1){:target="_blank" rel="noopener"}
 
-[Right](https://opelpanfan.github.io/car-dash-7/pinout/?connector=right23)
+[Right](https://opelpanfan.github.io/car-dash-7/pinout/?connector=right23&pin=1){:target="_blank" rel="noopener"}
 
 # Dispay in action
 
-[Link](https://github.com/opelpanfan/car-dash-7/blob/main/Hardware/photos/VID-20230227-WA0005.mp4)
+[Link](https://github.com/opelpanfan/car-dash-7/blob/main/Hardware/photos/VID-20230227-WA0005.mp4){:target="_blank" rel="noopener"}
 
 
