@@ -109,8 +109,8 @@ pins:
 
 info:
   title: 7" Dashboard
-  name: Right Connector
-  cid: right23
+  name: Left Connector
+  cid: left23
   board_url: https://github.com/opelpanfan/car-dash-7
   image:
     file: black23.jpg

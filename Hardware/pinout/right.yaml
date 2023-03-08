@@ -1,12 +1,100 @@
 pins:
   - pin: 1
-    type: 12V
-    function: 12V Supply from main relay output
+    function: Highside Output 2
+    type: hs
+    
+  - pin: 2
+    function: Highside Output 3
+    type: hs
+    
+  - pin: 3
+    function: Highside Output 0
+    type: hs
+    
+  - pin: 4
+    function: Highside Output 1
+    type: hs
+    
+  - pin: 5
+    function: Highside Output 8
+    type: hs
+    
+  - pin: 6
+    function: Highside Output 9
+    type: hs
+    
+  - pin: 7
+    function: Highside Output 12
+    type: hs
+    
+  - pin: 8
+    function: Highside Output 13
+    type: hs
+    
+  - pin: 9
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+    
+  - pin: 10
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+    
+  - pin: 11
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+    
+  - pin: 12
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+    
+  - pin: 13
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+    
+  - pin: 14
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+    
+  - pin: 15
+    function: Power supply to Highside outputs from battery.
+    type: 12v
+
+  - pin: 16
+    function: Highside Output 7
+    type: hs
+    
+  - pin: 17
+    function: Highside Output 6
+    type: hs
+    
+  - pin: 18
+    function: Highside Output 5
+    type: hs
+    
+  - pin: 19
+    function: Highside Output 4
+    type: hs
+    
+  - pin: 20
+    function: Highside Output 11
+    type: hs
+    
+  - pin: 21
+    function: Highside Output 10
+    type: hs
+    
+  - pin: 22
+    function: Highside Output 15
+    type: hs
+    
+  - pin: 23
+    function: Highside Output 14
+    type: hs
 
 info:
   title: 7" Dashboard
-  name: Left Connector
-  cid: left23
+  name: Right Connector
+  cid: right23
   board_url: https://github.com/opelpanfan/car-dash-7
   image:
     file: black23.jpg
