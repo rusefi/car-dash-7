@@ -15,6 +15,9 @@ Build on STM32CubeIDE 1.11.2 and TouchGFX 4.21.1
 * SD card
 * 4 user buttons
 * W2812 RGB LED
+* lps22 baro
+* light sensor
+* gyroscope
 * on-board USB for debugging
 
 # Screen can be purchased from 
