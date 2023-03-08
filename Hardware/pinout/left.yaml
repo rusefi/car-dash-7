@@ -1,35 +1,35 @@
 pins:
   - pin: 1    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
 
   - pin: 2    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 3    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 4    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 5    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 6    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 7    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 8    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 9
     type: can
@@ -61,35 +61,35 @@ pins:
     
   - pin: 16    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
 
   - pin: 17    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 18    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 19    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 20    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 21    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 22    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
     
   - pin: 23    
     type: in
-    function: Input
+    function: 0-5V Analogue or GND Digital Input (selectable through FW)
 
 info:
   title: 7" Dashboard
