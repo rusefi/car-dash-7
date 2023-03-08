@@ -9,7 +9,7 @@ info:
   cid: left23
   board_url: https://github.com/opelpanfan/car-dash-7
   image:
-    file: black23.png
+    file: black23.jpg
   pins:
     - pin: 1
       x: 239
