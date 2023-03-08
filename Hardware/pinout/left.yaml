@@ -1,0 +1,188 @@
+pins:
+  - pin: 1
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+
+  - pin: 2
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 3
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 4
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 5
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 6
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 7
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 8
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 9
+    type: can
+    function: CAN 1 bus low
+    
+  - pin: 10
+    type: can
+    function: CAN 1 bus high
+    
+  - pin: 11
+    type: can
+    function: CAN 2 bus low
+    
+  - pin: 12
+    type: can
+    function: CAN 2 bus high
+    
+  - pin: 13
+    function: "Analog Voltage +5 supply"
+    type: 5v
+    
+  - pin: 14
+    function: Power GND
+    type: gnd
+    
+  - pin: 15
+    function: Power supply from battery.
+    type: 12v
+    
+  - pin: 16
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+
+  - pin: 17
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 18
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 19
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 20
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 21
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 22
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+    
+  - pin: 23
+    class: [switch_inputs, analog_inputs]
+    type: at
+    function: Input
+
+info:
+  title: 7" Dashboard
+  name: Right Connector
+  cid: right23
+  board_url: https://github.com/opelpanfan/car-dash-7
+  image:
+    file: black23.png
+  pins:
+    - pin: 1
+      x: 239
+      y: 312
+    - pin: 2
+      x: 343
+      y: 312
+    - pin: 3
+      x: 447
+      y: 312
+    - pin: 4
+      x: 551
+      y: 312
+    - pin: 5
+      x: 655
+      y: 312
+    - pin: 6
+      x: 759
+      y: 312
+    - pin: 7
+      x: 863
+      y: 312
+    - pin: 8
+      x: 967
+      y: 312
+    - pin: 9
+      x: 291
+      y: 412
+    - pin: 10
+      x: 395
+      y: 412
+    - pin: 11
+      x: 499
+      y: 412
+    - pin: 12
+      x: 603
+      y: 412
+    - pin: 13
+      x: 707
+      y: 412
+    - pin: 14
+      x: 811
+      y: 412
+    - pin: 15
+      x: 915
+      y: 412
+    - pin: 16
+      x: 239
+      y: 512
+    - pin: 17
+      x: 343
+      y: 512
+    - pin: 18
+      x: 447
+      y: 512
+    - pin: 19
+      x: 551
+      y: 512
+    - pin: 20
+      x: 655
+      y: 512
+    - pin: 21
+      x: 759
+      y: 512
+    - pin: 22
+      x: 863
+      y: 512
+    - pin: 23
+      x: 967
+      y: 512
+
+
