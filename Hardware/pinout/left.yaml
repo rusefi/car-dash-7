@@ -114,6 +114,7 @@ info:
   board_url: https://github.com/opelpanfan/car-dash-7
   image:
     file: black23.jpg
+  directory: pinout
   pins:
     - pin: 1
       x: 239
