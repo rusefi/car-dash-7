@@ -33,31 +33,31 @@ pins:
     
   - pin: 9
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
     
   - pin: 10
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
     
   - pin: 11
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
     
   - pin: 12
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
     
   - pin: 13
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
     
   - pin: 14
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
     
   - pin: 15
     function: Power supply to Highside outputs from battery.
-    type: 12v
+    type: 12hs
 
   - pin: 16
     function: Highside Output 7

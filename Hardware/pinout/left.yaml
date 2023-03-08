@@ -1,42 +1,34 @@
 pins:
-  - pin: 1
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 1    
+    type: in
     function: Input
 
-  - pin: 2
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 2    
+    type: in
     function: Input
     
-  - pin: 3
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 3    
+    type: in
     function: Input
     
-  - pin: 4
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 4    
+    type: in
     function: Input
     
-  - pin: 5
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 5    
+    type: in
     function: Input
     
-  - pin: 6
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 6    
+    type: in
     function: Input
     
-  - pin: 7
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 7    
+    type: in
     function: Input
     
-  - pin: 8
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 8    
+    type: in
     function: Input
     
   - pin: 9
@@ -64,47 +56,39 @@ pins:
     type: gnd
     
   - pin: 15
-    function: Power supply from battery.
+    function: Power supply from bintery.
     type: 12v
     
-  - pin: 16
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 16    
+    type: in
     function: Input
 
-  - pin: 17
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 17    
+    type: in
     function: Input
     
-  - pin: 18
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 18    
+    type: in
     function: Input
     
-  - pin: 19
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 19    
+    type: in
     function: Input
     
-  - pin: 20
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 20    
+    type: in
     function: Input
     
-  - pin: 21
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 21    
+    type: in
     function: Input
     
-  - pin: 22
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 22    
+    type: in
     function: Input
     
-  - pin: 23
-    class: [switch_inputs, analog_inputs]
-    type: at
+  - pin: 23    
+    type: in
     function: Input
 
 info:

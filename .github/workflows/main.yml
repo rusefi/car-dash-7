@@ -33,8 +33,7 @@ jobs:
           {
           "pin":"Pin Number",
           "type":"Type",
-          "function":"Typical Function",
-          "color":"Pigtail Color"
+          "function":"Typical Function"
           }
         print-columns: |
           [
@@ -42,30 +41,13 @@ jobs:
           ]
         colors: |
           {
-          "12v":"yellow";
-          "12V":"yellow";
-          "5v":"red",
-          "5V":"red",
-          "at":"green",
-          "av":"brown",
+          "12v":"red";
+          "12hs":"red";
+          "5v":"yellow",
+          "in":"green",
           "can":"blue",
-          "din":"lime",
-          "etb":"darkcyan",
-          "gnd":"darkgreen",
-          "gp_high":"aqua",
-          "gp_low":"aquamarine",
-          "gp_pp":"cyan",
-          "hall":"darkolivegreen",
-          "hl":"gold",
+          "gnd":"black",
           "hs":"indigo",
-          "ign":"magenta",
-          "inj":"maroon",
-          "ls":"lightgreen",
-          "mr":"firebrick",
-          "pgnd":"coral",
-          "sgnd":"olive",
-          "usb":"lightseagreen",
-          "vr":"sienna"
           }
     - name: Setup Pages
       uses: actions/configure-pages@v3
