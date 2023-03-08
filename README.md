@@ -38,12 +38,7 @@ STLink v2
 Looking from the back of the dash
 ![back](https://user-images.githubusercontent.com/12942077/223533654-92d001a3-146c-4abf-9319-0453434004cc.png)
 
-Left
-![left_connector](https://user-images.githubusercontent.com/12942077/223532623-71afa31b-5c37-4b8b-8fe8-a2cdf9893196.png)
-
-Right
-![right_connector](https://user-images.githubusercontent.com/12942077/223532640-d616144e-3f50-43a5-acf2-b9abf488b4c5.png)
-
+[Pinout](https://opelpanfan.github.io/car-dash-7/pinout/)
 # Dispay in action
 
 [Link](https://github.com/opelpanfan/car-dash-7/blob/main/Hardware/photos/VID-20230227-WA0005.mp4)
