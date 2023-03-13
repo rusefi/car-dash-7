@@ -1921,7 +1921,7 @@ void Start_LED_Task(void *argument)
 	/* Infinite loop */
 	for (;;) {
 		HAL_GPIO_TogglePin(LED_PJ12_GPIO_Port, LED_PJ12_Pin);
-		osDelay(1000);
+		osDelay(100);
 	}
   /* USER CODE END Start_LED_Task */
 }
@@ -1943,7 +1943,7 @@ void Start_CAN_Task(void *argument)
 	Current_Status.SPEED_UNIT = Kmh;
 	HAL_GPIO_WritePin(CAN1_SEL0_GPIO_Port, CAN1_SEL0_Pin, SET);
 
-	Current_Status.RPM = 4500;
+	//Current_Status.RPM = 4500;
 
 	for (;;) {
 		if (CAN_ENABLED) {
@@ -2300,13 +2300,13 @@ void Start_CAN_Task(void *argument)
 				Current_Status.RPM_360 =
 						Current_Status.RPM_360 >= 360 ?
 								360 : Current_Status.RPM_360;
-
+				osDelay(1);
 			}
 			else {
 
-				if(Current_Status.RPM > LCD_RPM_HIGH) Current_Status.RPM = 0;
-				Current_Status.RPM = Current_Status.RPM + 1;
-				osDelay(1);
+//				if(Current_Status.RPM > LCD_RPM_HIGH) Current_Status.RPM = 0;
+//				Current_Status.RPM = Current_Status.RPM + 1;
+//				osDelay(1);
 			}
 		} else {
 			osDelay(60000);
@@ -2441,7 +2441,7 @@ void Start_RGB_Task(void *argument)
 				}
 
 				WS2812_Refresh();
-				osDelay(100);
+				osDelay(50);
 			}
 		}
   /* USER CODE END Start_RGB_Task */
@@ -2651,8 +2651,8 @@ void Start_ADC_Task(void *argument)
 		HAL_ADC_PollForConversion(&hadc1, 1000);
 		ADCValue = HAL_ADC_GetValue(&hadc1);
 		HAL_ADC_Stop(&hadc1);
-		Current_Status.BATT = (ADCValue * 749) * (3.3 / 4096);
-		Current_Status.IND_BATT = Current_Status.BATT < 1198 ? true : false;
+		//Current_Status.BATT = (ADCValue * 749) * (3.3 / 4096);
+		//Current_Status.IND_BATT = Current_Status.BATT < 1198 ? true : false;
 		//Current_Status.ECT = (ADCValue * 749) * (3.3 / 4096);
 		osDelay(1000);
 	}
@@ -2749,7 +2749,7 @@ void Start_MULTISENSE_Task(void *argument)
 		HAL_ADC_Stop(&hadc1);
 
 		uint16_t multiADC = (ADCValue * 749) * (3.3 / 4096);
-		Current_Status.LAMBDA1 = (ADCValue * 749) * (3.3 / 4096);
+		//Current_Status.LAMBDA1 = (ADCValue * 749) * (3.3 / 4096);
 	}
     osDelay(1000);
   }
