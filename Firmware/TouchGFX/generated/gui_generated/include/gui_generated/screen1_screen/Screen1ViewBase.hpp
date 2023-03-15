@@ -11,8 +11,6 @@
 #include <touchgfx/widgets/Image.hpp>
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
 #include <touchgfx/widgets/Gauge.hpp>
-#include <touchgfx/containers/buttons/Buttons.hpp>
-#include <touchgfx/mixins/ClickListener.hpp>
 
 class Screen1ViewBase : public touchgfx::View<Screen1Presenter>
 {
@@ -67,7 +65,6 @@ protected:
     touchgfx::TextAreaWithOneWildcard fuelp_label;
     touchgfx::TextAreaWithOneWildcard fuelp_units;
     touchgfx::Gauge gauge1;
-    touchgfx::ClickListener< touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  > flexButton1;
 
     /*
      * Wildcard Buffers
@@ -122,16 +119,6 @@ protected:
     touchgfx::Unicode::UnicodeChar fuelp_unitsBuffer[FUELP_UNITS_SIZE];
 
 private:
-
-    /*
-     * Callback Declarations
-     */
-    touchgfx::Callback<Screen1ViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
-
-    /*
-     * Callback Handler Declarations
-     */
-    void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
 
 };
 

@@ -6,8 +6,7 @@
 #include <images/BitmapDatabase.hpp>
 #include <texts/TextKeysAndLanguages.hpp>
 
-Screen1ViewBase::Screen1ViewBase() :
-    flexButtonCallback(this, &Screen1ViewBase::flexButtonCallbackHandler)
+Screen1ViewBase::Screen1ViewBase()
 {
     __background.setPosition(0, 0, 1024, 600);
     __background.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -286,14 +285,6 @@ Screen1ViewBase::Screen1ViewBase() :
     gauge1.setMovingNeedleRenderingAlgorithm(touchgfx::TextureMapper::BILINEAR_INTERPOLATION);
     gauge1.setSteadyNeedleRenderingAlgorithm(touchgfx::TextureMapper::BILINEAR_INTERPOLATION);
     add(gauge1);
-
-    flexButton1.setBoxWithBorderPosition(0, 0, 165, 601);
-    flexButton1.setBorderSize(5);
-    flexButton1.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
-    flexButton1.setAlpha(0);
-    flexButton1.setAction(flexButtonCallback);
-    flexButton1.setPosition(859, 0, 165, 601);
-    add(flexButton1);
 }
 
 Screen1ViewBase::~Screen1ViewBase()
@@ -304,15 +295,4 @@ Screen1ViewBase::~Screen1ViewBase()
 void Screen1ViewBase::setupScreen()
 {
 
-}
-
-void Screen1ViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
-{
-    if (&src == &flexButton1)
-    {
-        //Interaction1
-        //When flexButton1 clicked change screen to Screen2
-        //Go to Screen2 with no screen transition
-        application().gotoScreen2ScreenNoTransition();
-    }
 }

@@ -1819,6 +1819,35 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
 }
 
+void Update_RPM_Ranges()
+{
+	Current_Status.RPM_100 = mapInt(Current_Status.RPM, 0,
+	LCD_RPM_HIGH, 0, 100);
+	Current_Status.RPM_100 =
+			Current_Status.RPM_100 >= 100 ?
+					100 : Current_Status.RPM_100;
+	Current_Status.RPM_180 = mapInt(Current_Status.RPM, 0,
+	LCD_RPM_HIGH, 0, 180);
+	Current_Status.RPM_180 =
+			Current_Status.RPM_180 >= 180 ?
+					810 : Current_Status.RPM_180;
+	Current_Status.RPM_270 = mapInt(Current_Status.RPM, 0,
+	LCD_RPM_HIGH, 0, 270);
+	Current_Status.RPM_270 =
+			Current_Status.RPM_270 >= 270 ?
+					270 : Current_Status.RPM_270;
+	Current_Status.RPM_240 = mapInt(Current_Status.RPM, 0,
+	LCD_RPM_HIGH, 0, 240);
+	Current_Status.RPM_240 =
+			Current_Status.RPM_240 >= 240 ?
+					240 : Current_Status.RPM_240;
+	Current_Status.RPM_360 = mapInt(Current_Status.RPM, 0,
+	LCD_RPM_HIGH, 0, 360);
+	Current_Status.RPM_360 =
+			Current_Status.RPM_360 >= 360 ?
+					360 : Current_Status.RPM_360;
+}
+
 
 /* USER CODE END 4 */
 
@@ -1943,6 +1972,23 @@ void Start_CAN_Task(void *argument)
 	Current_Status.SPEED_UNIT = Kmh;
 	HAL_GPIO_WritePin(CAN1_SEL0_GPIO_Port, CAN1_SEL0_Pin, SET);
 
+	osDelay(1000);
+
+	if(RPM_SWEEP)
+	{
+		for (int i = 0; i < PROTECTION_RPM_HIGH / 100; ++i) {
+			Current_Status.RPM = i * 100;
+			Update_RPM_Ranges();
+			osDelay(10);
+		}
+		for (int i = PROTECTION_RPM_HIGH / 100; i > 0; --i) {
+			Current_Status.RPM = i * 100;
+			Update_RPM_Ranges();
+			osDelay(10);
+		}
+	}
+	Current_Status.RPM = 0;
+	Update_RPM_Ranges();
 	//Current_Status.RPM = 4500;
 
 	for (;;) {
@@ -2273,33 +2319,9 @@ void Start_CAN_Task(void *argument)
 				default:
 					break;
 				}
-				HAL_GPIO_TogglePin(LED_PJ15_GPIO_Port, LED_PJ15_Pin);
 
-				Current_Status.RPM_100 = mapInt(Current_Status.RPM, 0,
-				LCD_RPM_HIGH, 0, 100);
-				Current_Status.RPM_100 =
-						Current_Status.RPM_100 >= 100 ?
-								100 : Current_Status.RPM_100;
-				Current_Status.RPM_180 = mapInt(Current_Status.RPM, 0,
-				LCD_RPM_HIGH, 0, 180);
-				Current_Status.RPM_180 =
-						Current_Status.RPM_180 >= 180 ?
-								810 : Current_Status.RPM_180;
-				Current_Status.RPM_270 = mapInt(Current_Status.RPM, 0,
-				LCD_RPM_HIGH, 0, 270);
-				Current_Status.RPM_270 =
-						Current_Status.RPM_270 >= 270 ?
-								270 : Current_Status.RPM_270;
-				Current_Status.RPM_240 = mapInt(Current_Status.RPM, 0,
-				LCD_RPM_HIGH, 0, 240);
-				Current_Status.RPM_240 =
-						Current_Status.RPM_240 >= 240 ?
-								240 : Current_Status.RPM_240;
-				Current_Status.RPM_360 = mapInt(Current_Status.RPM, 0,
-				LCD_RPM_HIGH, 0, 360);
-				Current_Status.RPM_360 =
-						Current_Status.RPM_360 >= 360 ?
-								360 : Current_Status.RPM_360;
+				HAL_GPIO_TogglePin(LED_PJ15_GPIO_Port, LED_PJ15_Pin);
+				Update_RPM_Ranges();
 				osDelay(1);
 			}
 			else {
@@ -2398,7 +2420,7 @@ void Start_RGB_Task(void *argument)
 				WS2812_Clear(0);
 				uint8_t RPMLED = LED_NUMBER;
 
-				uint16_t lowRange = mapInt(Current_Status.RPM, PROTECTION_RPM_LOW, 0, RPMLED - PROTECTION_RPM_LED, 1);
+				uint16_t lowRange = LED_INVERTED ? mapInt(Current_Status.RPM, PROTECTION_RPM_LOW, 0, 1, RPMLED - PROTECTION_RPM_LED) : mapInt(Current_Status.RPM, PROTECTION_RPM_LOW, 0, RPMLED - PROTECTION_RPM_LED, 1);
 				lowRange = lowRange > RPMLED - PROTECTION_RPM_LED ? RPMLED - PROTECTION_RPM_LED : lowRange;
 				lowRange = lowRange < 1 ? 1 : lowRange;
 
@@ -2417,7 +2439,7 @@ void Start_RGB_Task(void *argument)
 				}
 
 				if (Current_Status.RPM > PROTECTION_RPM_LOW) {
-					uint16_t highRange = mapInt(Current_Status.RPM, PROTECTION_RPM_HIGH, PROTECTION_RPM_LOW, PROTECTION_RPM_LED, 1);
+					uint16_t highRange = LED_INVERTED ? mapInt(Current_Status.RPM, PROTECTION_RPM_HIGH, PROTECTION_RPM_LOW,  1, PROTECTION_RPM_LED) : mapInt(Current_Status.RPM, PROTECTION_RPM_HIGH, PROTECTION_RPM_LOW, PROTECTION_RPM_LED, 1);
 					for (int i = 1; i <= highRange; i++) {
 						WS2812_RGB_t color;
 						color.red = 255;
